@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -69,6 +70,7 @@ public class MainActivity extends FragmentActivity {
     public static ArrayList<Item> ThemaItem = new ArrayList<Item>();
     public static ArrayList<NewsItem> NewsNews = new ArrayList<NewsItem>();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,13 +94,10 @@ public class MainActivity extends FragmentActivity {
             rA.registerDong("Detailaddr");
             rA.registerNews(10);
         }
-        rA.testAM("ACTION.GET.ONE",0,22);
-
-
+        rA.testAM("ACTION.GET.ONE",6,19);
 
         //諛붿씤�뵫
         actionbar = getActionBar();
-
 
         //Drawer
         mTitle = mDrawerTitle = getTitle();
@@ -168,24 +167,20 @@ public class MainActivity extends FragmentActivity {
                         ImageView newsimage = (ImageView)findViewById(R.id.newsImage);
                         Button newsbutton = (Button)findViewById(R.id.newsButton);
 
-                        newstitle.setText(NewsNews.get(0).getTitle());
-                        newsdesc.setText(NewsNews.get(0).getDesc());
-                        new DownloadImageTask(newsimage).execute(NewsNews.get(0).getImageUrl());
-
-                        newsbutton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Uri uri = Uri.parse(NewsNews.get(0).getLink());
-                                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                                startActivity(intent);
-                            }
-                        });
-
-
-
-
-
+                        if(MainActivity.NewsNews.size()>0){
+                            newstitle.setText(NewsNews.get(0).getTitle());
+                            newsdesc.setText(NewsNews.get(0).getDesc());
+                            new DownloadImageTask(newsimage).execute(NewsNews.get(0).getImageUrl());
+                            newsbutton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Uri uri = Uri.parse(NewsNews.get(0).getLink());
+                                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                                    startActivity(intent);
+                                }
+                            });
+                        }
                         break;
                     case 1:
                         setContentView(R.layout.activity_main);
@@ -270,25 +265,25 @@ public class MainActivity extends FragmentActivity {
             }else if(position ==3) {
                 setContentView(R.layout.activity_news);
                 setDrawer(ActionBar.NAVIGATION_MODE_STANDARD);
-
                 TextView newstitle = (TextView)findViewById(R.id.newsTitle);
                 TextView newsdesc = (TextView)findViewById(R.id.newsDesc);
                 ImageView newsimage = (ImageView)findViewById(R.id.newsImage);
                 Button newsbutton = (Button)findViewById(R.id.newsButton);
 
-                newstitle.setText(NewsNews.get(0).getTitle());
-                newsdesc.setText(NewsNews.get(0).getDesc());
-                new DownloadImageTask(newsimage).execute(NewsNews.get(0).getImageUrl());
-
-                newsbutton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Uri uri = Uri.parse(NewsNews.get(0).getLink());
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                        startActivity(intent);
-                    }
-                });
+                if(MainActivity.NewsNews.size()>0){
+                    newstitle.setText(NewsNews.get(0).getTitle());
+                    newsdesc.setText(NewsNews.get(0).getDesc());
+                    new DownloadImageTask(newsimage).execute(NewsNews.get(0).getImageUrl());
+                    newsbutton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Uri uri = Uri.parse(NewsNews.get(0).getLink());
+                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                            startActivity(intent);
+                        }
+                    });
+                }
 
             }
         }
@@ -384,82 +379,84 @@ public class MainActivity extends FragmentActivity {
                     if(size>=1) {
                         mapView.removeAllPOIItems();
                         Toast.makeText(getApplicationContext(), "" + size, Toast.LENGTH_SHORT).show();
-                        in1 = MainActivity.ThemaItem.get(0);
                         marker = new MapPOIItem();
-                        nameTv.setText("" + in1.title);
-                        telTv.setText("" + in1.phone);
-                        cateTv.setText("" + in1.category);
-                        addrTv.setText("" + in1.address);
-
-
-                        new DownloadImageTask(foodImg).execute(in1.imageUrl);
-                        marker.setItemName("Default Marker");
-                        marker.setTag(0);
-                        marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
-                        marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
-                        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
-                        mapView.addPOIItem(marker);
+                        if(MainActivity.ThemaItem.size()>0){
+                            in1 = MainActivity.ThemaItem.get(0);
+                            nameTv.setText("" + in1.title);
+                            telTv.setText("" + in1.phone);
+                            cateTv.setText("" + in1.category);
+                            addrTv.setText("" + in1.address);
+                            new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                            marker.setItemName("Default Marker");
+                            marker.setTag(0);
+                            marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
+                            marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                            mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
+                            mapView.addPOIItem(marker);
+                        }
                     }
                     break;
                 case 1:
                     if(size >=2) {
                         mapView.removeAllPOIItems();
                         Toast.makeText(getApplicationContext(), "" + size, Toast.LENGTH_SHORT).show();
-                        in1 = MainActivity.ThemaItem.get(1);
                         marker = new MapPOIItem();
-                        nameTv.setText("" + in1.title);
-                        telTv.setText("" + in1.phone);
-                        cateTv.setText("" + in1.category);
-                        addrTv.setText("" + in1.address);
-
-
-                        new DownloadImageTask(foodImg).execute(in1.imageUrl);
-                        marker.setItemName("Default Marker");
-                        marker.setTag(0);
-                        marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
-                        marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
-                        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
-                        mapView.addPOIItem(marker);
+                        if(MainActivity.ThemaItem.size()>0){
+                            in1 = MainActivity.ThemaItem.get(1);
+                            nameTv.setText("" + in1.title);
+                            telTv.setText("" + in1.phone);
+                            cateTv.setText("" + in1.category);
+                            addrTv.setText("" + in1.address);
+                            new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                            marker.setItemName("Default Marker");
+                            marker.setTag(0);
+                            marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
+                            marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                            mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
+                            mapView.addPOIItem(marker);
+                        }
                     }
                     break;
                 case 2:
                     if(size >=3) {
                         mapView.removeAllPOIItems();
                         Toast.makeText(getApplicationContext(), "" + size, Toast.LENGTH_SHORT).show();
-                        in1 = MainActivity.ThemaItem.get(2);
                         marker = new MapPOIItem();
-                        nameTv.setText("" + in1.title);
-                        telTv.setText("" + in1.phone);
-                        cateTv.setText("" + in1.category);
-                        addrTv.setText("" + in1.address);
-                        new DownloadImageTask(foodImg).execute(in1.imageUrl);
-
-                        marker.setItemName("Default Marker");
-                        marker.setTag(0);
-                        marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
-                        marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
-                        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
-                        mapView.addPOIItem(marker);
+                        if(MainActivity.ThemaItem.size()>0){
+                            in1 = MainActivity.ThemaItem.get(2);
+                            nameTv.setText("" + in1.title);
+                            telTv.setText("" + in1.phone);
+                            cateTv.setText("" + in1.category);
+                            addrTv.setText("" + in1.address);
+                            new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                            marker.setItemName("Default Marker");
+                            marker.setTag(0);
+                            marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
+                            marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                            mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
+                            mapView.addPOIItem(marker);
+                        }
                     }
                     break;
                 case 3:
                     if(size >=4) {
                         mapView.removeAllPOIItems();
                         Toast.makeText(getApplicationContext(), "" + size, Toast.LENGTH_SHORT).show();
-                        in1 = MainActivity.ThemaItem.get(3);
                         marker = new MapPOIItem();
-                        nameTv.setText("" + in1.title);
-                        telTv.setText("" + in1.phone);
-                        cateTv.setText("" + in1.category);
-                        addrTv.setText("" + in1.address);
-                        new DownloadImageTask(foodImg).execute(in1.imageUrl);
-
-                        marker.setItemName("Default Marker");
-                        marker.setTag(0);
-                        marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
-                        marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
-                        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
-                        mapView.addPOIItem(marker);
+                        if(MainActivity.ThemaItem.size()>0){
+                            in1 = MainActivity.ThemaItem.get(3);
+                            nameTv.setText("" + in1.title);
+                            telTv.setText("" + in1.phone);
+                            cateTv.setText("" + in1.category);
+                            addrTv.setText("" + in1.address);
+                            new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                            marker.setItemName("Default Marker");
+                            marker.setTag(0);
+                            marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
+                            marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                            mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
+                            mapView.addPOIItem(marker);
+                        }
                     }
                     break;
             }
@@ -506,4 +503,27 @@ public class MainActivity extends FragmentActivity {
         super.onDestroy();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SaveData svData = new SaveData(mContext);
+        if(svData.isFood()){
+            ThemaItem = svData.getFood("SharedFood");
+            Log.i("aaaa","222222222222222222222222222"+ThemaItem.get(0).title);
+            MainActivity.mHandler.sendEmptyMessage(0);
+        }
+        if(svData.isNews()){
+            NewsNews = svData.getNews("SharedNews");
+            Log.i("aaaa","33333333333333333333333333333333"+NewsNews.get(0).getTitle());
+            MainActivity.mHandler.sendEmptyMessage(0);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SaveData svData = new SaveData(mContext);
+        svData.save("SharedNews");
+        svData.save("SharedFood");
+    }
 }

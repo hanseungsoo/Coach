@@ -162,6 +162,9 @@ public class foodDbJson extends AsyncTask<String,Void,Void> {
             Log.e("aaaa", exceptionAsStrting);
         }
 
+        SaveData svData = new SaveData(MainActivity.mContext);
+        svData.save("SharedFood");
+
         super.onPostExecute(aVoid);
     }
 
