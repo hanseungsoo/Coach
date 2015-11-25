@@ -65,6 +65,7 @@ public class MainActivity extends FragmentActivity {
     ImageView foodImg = null;
     ViewGroup mapViewContainer = null;
     static Handler mHandler;
+    static int ViewInt = 1;
 
     //Data
     public static ArrayList<Item> ThemaItem = new ArrayList<Item>();
@@ -94,7 +95,7 @@ public class MainActivity extends FragmentActivity {
             rA.registerDong("Detailaddr");
             rA.registerNews(10);
         }
-        rA.testAM("ACTION.GET.ONE",6,19);
+        rA.testAM("ACTION.GET.ONE",17,47);
 
         //諛붿씤�뵫
         actionbar = getActionBar();
@@ -184,6 +185,7 @@ public class MainActivity extends FragmentActivity {
                         break;
                     case 1:
                         setContentView(R.layout.activity_main);
+                        setDrawer(ActionBar.NAVIGATION_MODE_TABS);
                         nameTv = (TextView)findViewById(R.id.nameView);
                         telTv = (TextView)findViewById(R.id.telView);
                         cateTv = (TextView)findViewById(R.id.cateView);
@@ -193,6 +195,7 @@ public class MainActivity extends FragmentActivity {
                         mapView.setDaumMapApiKey("9db6272582177f1d7b0643e35e1993e9");
                         mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
                         mapViewContainer.addView(mapView);
+
 
                         actionbar.removeAllTabs();
                         setDrawer(ActionBar.NAVIGATION_MODE_TABS);
@@ -205,6 +208,7 @@ public class MainActivity extends FragmentActivity {
 
             }
         };
+        mHandler.sendEmptyMessage(ViewInt);
 
     }
 
@@ -251,10 +255,13 @@ public class MainActivity extends FragmentActivity {
                 cateTv = (TextView)findViewById(R.id.cateView);
                 addrTv = (TextView)findViewById(R.id.addrView);
                 foodImg = (ImageView)findViewById(R.id.cookImage);
-                mapView = new MapView(MainActivity.this);
-                mapView.setDaumMapApiKey("9db6272582177f1d7b0643e35e1993e9");
-                mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
-                mapViewContainer.addView(mapView);
+                if(mapView == null)
+                {
+                    mapView = new MapView(MainActivity.this);
+                    mapView.setDaumMapApiKey("9db6272582177f1d7b0643e35e1993e9");
+                    mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
+                    mapViewContainer.addView(mapView);
+                }
 
                 actionbar.removeAllTabs();
                 setDrawer(ActionBar.NAVIGATION_MODE_TABS);
@@ -509,13 +516,11 @@ public class MainActivity extends FragmentActivity {
         SaveData svData = new SaveData(mContext);
         if(svData.isFood()){
             ThemaItem = svData.getFood("SharedFood");
-            Log.i("aaaa","222222222222222222222222222"+ThemaItem.get(0).title);
-            MainActivity.mHandler.sendEmptyMessage(0);
+            Log.i("aaaa", "222222222222222222222222222" + ThemaItem.get(0).title);
         }
         if(svData.isNews()){
             NewsNews = svData.getNews("SharedNews");
-            Log.i("aaaa","33333333333333333333333333333333"+NewsNews.get(0).getTitle());
-            MainActivity.mHandler.sendEmptyMessage(0);
+            Log.i("aaaa", "33333333333333333333333333333333" + NewsNews.get(0).getTitle());
         }
     }
 

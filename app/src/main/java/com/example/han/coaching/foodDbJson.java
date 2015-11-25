@@ -36,7 +36,7 @@ public class foodDbJson extends AsyncTask<String,Void,Void> {
 
         try{
             LocationManager locationManager = (LocationManager) MainActivity.mContext.getSystemService(Context.LOCATION_SERVICE);
-            int radius = 1000; // 以묒떖 醫뚰몴遺��꽣�쓽 諛섍꼍嫄곕━. �듅�젙 吏��뿭�쓣 以묒떖�쑝濡� 寃��깋�븯�젮怨� �븷 寃쎌슦 �궗�슜. meter �떒�쐞 (0 ~ 10000)
+            int radius = 1000;
             int page = 1;
             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             double latitude = location.getLatitude();
@@ -56,14 +56,16 @@ public class foodDbJson extends AsyncTask<String,Void,Void> {
                             item.address = "(X)address";
                             item.phone = "주변에 해당하는 음식점이 없습니다.";
                             MainActivity.ThemaItem.set(0, item);
-                            MainActivity.mHandler.sendEmptyMessage(1);
                             registerAlarm rA = new registerAlarm(MainActivity.mContext);
                             rA.AlarmCancel("ACTION.SET.NEWS");
                             rA.registerNews(60*60*1000);
                         }else{
 
-                            MainActivity.ThemaItem.set(0,itemList.get(0));
-                            MainActivity.mHandler.sendEmptyMessage(1);
+                            MainActivity.ThemaItem.set(0, itemList.get(0));
+                            registerAlarm rA = new registerAlarm(MainActivity.mContext);
+
+                            rA.AlarmCancel("ACTION.SET.NEWS");
+                            rA.registerNews(60 * 60 * 1000);
                         }
                     }
 
@@ -79,7 +81,6 @@ public class foodDbJson extends AsyncTask<String,Void,Void> {
                 item.address = "(X)address";
                 item.phone = "주변에 해당하는 음식점이 없습니다.";
                 MainActivity.ThemaItem.set(0, item);
-                MainActivity.mHandler.sendEmptyMessage(1);
             }
             Log.i("aaaa","aaaaaaaaaaaaaaaaa2"+staticMerge.finish_food[0]);
             Searcher searcher2 = new Searcher();
@@ -93,12 +94,16 @@ public class foodDbJson extends AsyncTask<String,Void,Void> {
                         item.category = "음식점이 없습니다.";
                         item.address = "(X)address";
                         item.phone = "추천할만한";
-                        MainActivity.ThemaItem.set( 1 , item);
+                        MainActivity.ThemaItem.set(1,item);
                         registerAlarm rA = new registerAlarm(MainActivity.mContext);
                         rA.AlarmCancel("ACTION.SET.NEWS");
                         rA.registerNews(60*60*1000);
                     }else{
                         MainActivity.ThemaItem.set(1, itemList.get(0));
+                        registerAlarm rA = new registerAlarm(MainActivity.mContext);
+
+                        rA.AlarmCancel("ACTION.SET.NEWS");
+                        rA.registerNews(60 * 60 * 1000);
                     }
                 }
 
@@ -123,6 +128,10 @@ public class foodDbJson extends AsyncTask<String,Void,Void> {
                         rA.registerNews(60*60*1000);
                     }else{
                         MainActivity.ThemaItem.set(2, itemList.get(0));
+                        registerAlarm rA = new registerAlarm(MainActivity.mContext);
+                        rA.AlarmCancel("ACTION.SET.NEWS");
+                        rA.registerNews(60 * 60 * 1000);
+
                     }
                 }
 
@@ -145,9 +154,18 @@ public class foodDbJson extends AsyncTask<String,Void,Void> {
                         MainActivity.ThemaItem.set(3, item);
                         registerAlarm rA = new registerAlarm(MainActivity.mContext);
                         rA.AlarmCancel("ACTION.SET.NEWS");
-                        rA.registerNews(60*60*1000);
+                        rA.registerNews(60 * 60 * 1000);
+                        SaveData svData = new SaveData(MainActivity.mContext);
+                        svData.save("SharedFood");
+                        MainActivity.ViewInt = 1;
                     } else {
                         MainActivity.ThemaItem.set(3, itemList.get((int) (Math.random() * 15)));
+                        registerAlarm rA = new registerAlarm(MainActivity.mContext);
+                        SaveData svData = new SaveData(MainActivity.mContext);
+                        svData.save("SharedFood");
+                        rA.AlarmCancel("ACTION.SET.NEWS");
+                        rA.registerNews(60 * 60 * 1000);
+                        MainActivity.ViewInt = 1;
                     }
                 }
 
@@ -162,8 +180,6 @@ public class foodDbJson extends AsyncTask<String,Void,Void> {
             Log.e("aaaa", exceptionAsStrting);
         }
 
-        SaveData svData = new SaveData(MainActivity.mContext);
-        svData.save("SharedFood");
 
         super.onPostExecute(aVoid);
     }

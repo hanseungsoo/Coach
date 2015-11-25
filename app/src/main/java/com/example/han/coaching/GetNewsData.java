@@ -15,13 +15,9 @@ public class GetNewsData extends AsyncTask<Void,Void,Void> {
 
 
     NewsItem item;
-    // �쎒�궗�씠�듃�뿉 �젒�냽�븷 二쇱냼
     String uri = "http://rss.hankyung.com/new/news_main.xml";
-    // �쎒�궗�씠�듃�뿉 �젒�냽�쓣 �룄��二쇰뒗 �겢�옒�뒪
     URL url;
-    // XML臾몄꽌�쓽 �궡�슜�쓣 �엫�떆濡� ���옣�븷 蹂��닔
     String tagname = "", title="", desc="", link ="", image = "";
-    // �뜲�씠�꽣�쓽 �궡�슜�쓣 紐⑤몢 �씫�뼱�뱶�졇�뒗吏��뿉 ���븳 �젙蹂대�� ���옣
     Boolean flag = null;
     @Override
     protected void onPreExecute() {
@@ -82,6 +78,7 @@ public class GetNewsData extends AsyncTask<Void,Void,Void> {
         } catch(Exception e) {
             e.printStackTrace();
         }
+        MainActivity.ViewInt = 0;
         SaveData svData = new SaveData(MainActivity.mContext);
         svData.save("SharedNews");
 
@@ -90,7 +87,6 @@ public class GetNewsData extends AsyncTask<Void,Void,Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        MainActivity.mHandler.sendEmptyMessage(0);
 
         super.onPostExecute(aVoid);
     }

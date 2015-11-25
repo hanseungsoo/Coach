@@ -41,7 +41,7 @@ public class registerAlarm {
             PendingIntent sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
 
             // 서비스 시작
-            am.set(AlarmManager.RTC, triggerTime, sender);
+            am.set(AlarmManager.RTC_WAKEUP, triggerTime, sender);
         } catch (Exception e) {
             Log.d("MpMainActivity", e.getMessage() + "");
 
@@ -59,7 +59,7 @@ public class registerAlarm {
             AlarmManager am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
             PendingIntent sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
             // 서비스 시작
-            am.setRepeating(AlarmManager.RTC, cal.getTimeInMillis(), oneHour, sender);
+            am.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), oneHour, sender);
         } catch (Exception e) {
             Log.d("MpMainActivity", e.getMessage() + "");
 
@@ -78,7 +78,7 @@ public class registerAlarm {
             PendingIntent sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
 
             // 서비스 시작
-            am.set(AlarmManager.RTC, SI.getSharedTime(index), sender);
+            am.set(AlarmManager.RTC_WAKEUP, SI.getSharedTime(index), sender);
         } catch (Exception e) {
             Log.d("MpMainActivity", e.getMessage() + "");
 
@@ -102,7 +102,7 @@ public class registerAlarm {
             PendingIntent sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
 
             // 서비스 시작
-            am.setRepeating(AlarmManager.RTC, cal.getTimeInMillis(), oneHour, sender);
+            am.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), oneHour, sender);
         } catch (Exception e) {
             Log.d("MpMainActivity", e.getMessage() + "");
 
@@ -127,7 +127,7 @@ public class registerAlarm {
             PendingIntent sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
 
             // 서비스 시작
-            am.set(AlarmManager.RTC, cal.getTimeInMillis(), sender);
+            am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), sender);
         } catch (Exception e) {
             Log.d("MpMainActivity", e.getMessage() + "");
 
@@ -147,7 +147,7 @@ public class registerAlarm {
             PendingIntent sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
 
             // 서비스 시작
-            am.setRepeating(AlarmManager.RTC, cal.getTimeInMillis(), oneDay, sender);
+            am.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), oneDay, sender);
         } catch (Exception e) {
             Log.d("MpMainActivity", e.getMessage() + "");
 
@@ -167,7 +167,7 @@ public class registerAlarm {
             PendingIntent sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
 
             // 서비스 시작
-            am.setRepeating(AlarmManager.RTC, cal.getTimeInMillis(), halfMinute, sender);
+            am.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), halfMinute, sender);
         } catch (Exception e) {
             Log.d("MpMainActivity", e.getMessage() + "");
 
@@ -196,7 +196,7 @@ public class registerAlarm {
             PendingIntent sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
 
             // 서비스 시작
-            am.setRepeating(AlarmManager.RTC, triggerTime,OneWeek, sender);
+            am.setRepeating(AlarmManager.RTC_WAKEUP, triggerTime,OneWeek, sender);
         } catch (Exception e) {
             Log.d("MpMainActivity", e.getMessage() + "");
 
@@ -212,31 +212,31 @@ public class registerAlarm {
         PendingIntent sender;
         intentMyService = new Intent("ACTION.GET.ONE");
         sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
-        am.set(AlarmManager.RTC, SI.getSharedTime("0"), sender);
+        am.set(AlarmManager.RTC_WAKEUP, SI.getSharedTime("0"), sender);
 
         intentMyService = new Intent("ACTION.GET.TWO");
         sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
-        am.set(AlarmManager.RTC, SI.getSharedTime("1"), sender);
+        am.set(AlarmManager.RTC_WAKEUP, SI.getSharedTime("1"), sender);
 
         intentMyService = new Intent("ACTION.GET.THREE");
         sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
-        am.set(AlarmManager.RTC, SI.getSharedTime("2"), sender);
+        am.set(AlarmManager.RTC_WAKEUP, SI.getSharedTime("2"), sender);
 
         intentMyService = new Intent("ACTION.GET.FOUR");
         sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
-        am.set(AlarmManager.RTC, SI.getSharedTime("3"), sender);
+        am.set(AlarmManager.RTC_WAKEUP, SI.getSharedTime("3"), sender);
 
         intentMyService = new Intent("ACTION.GET.FIVE");
         sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
-        am.set(AlarmManager.RTC, SI.getSharedTime("4"), sender);
+        am.set(AlarmManager.RTC_WAKEUP, SI.getSharedTime("4"), sender);
 
         intentMyService = new Intent("ACTION.GET.SIX");
         sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
-        am.set(AlarmManager.RTC, SI.getSharedTime("5"), sender);
+        am.set(AlarmManager.RTC_WAKEUP, SI.getSharedTime("5"), sender);
 
         intentMyService = new Intent("ACTION.GET.SEVEN");
         sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
-        am.set(AlarmManager.RTC, SI.getSharedTime("6"), sender);
+        am.set(AlarmManager.RTC_WAKEUP, SI.getSharedTime("6"), sender);
 
     }
     public void AlarmCancel(String index){
