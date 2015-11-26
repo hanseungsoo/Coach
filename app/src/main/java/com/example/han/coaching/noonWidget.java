@@ -134,6 +134,7 @@ public class noonWidget extends AppWidgetProvider {
 
         if (intent.getAction().equals("chae.widget.click1")) {
             CLICK_FLAG = true;
+            MainActivity.ViewInt = 1;
             noonDb();
             Log.i("widget", "음식집 Clicked");
             Intent i = new Intent();
@@ -145,6 +146,7 @@ public class noonWidget extends AppWidgetProvider {
         if(intent.getAction().equals("chae.widget.click2")) {
             CLICK_FLAG = true;
             Log.i("widget", "뉴스 Clicked");
+            MainActivity.ViewInt = 0;
             Intent i = new Intent();
             i.setClassName("com.example.han.coaching", "com.example.han.coaching.MainActivity");
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_MULTIPLE_TASK);

@@ -53,7 +53,7 @@ public class MainActivity extends FragmentActivity {
     ActionBar actionbar;
     MapView mapView;
     TextView nameTv = null;
-    TextView telTv = null;
+    TextView telTv  = null;
     TextView cateTv = null;
     TextView addrTv = null;
     ImageView foodImg = null;
@@ -87,9 +87,9 @@ public class MainActivity extends FragmentActivity {
             rA.registerplace();
             rA.registerOneWeek();*/
             rA.registerDong("Detailaddr");
-            rA.registerNews(10);
+            rA.registerNews(30);
         }
-        rA.testAM("ACTION.GET.ONE",14,19);
+        rA.testAM("ACTION.GET.ONE",19,29);
 
         //諛붿씤�뵫
         actionbar = getActionBar();
@@ -139,17 +139,6 @@ public class MainActivity extends FragmentActivity {
         // tab
         actionbar.setHomeButtonEnabled(false);
 
-        if(noonWidget.CLICK_FLAG == true) {
-            if(noonWidget.contentValue.equals("content1")) {
-                Log.i("widget", "widget->main, content1");
-                int list_position = 0;
-                int tab_position = noonWidget.themaValue;
-                mDrawerList.performItemClick(mDrawerList.getChildAt(1), 1, mDrawerList.getItemIdAtPosition(1));
-                actionbar.setSelectedNavigationItem(tab_position);
-                noonWidget.CLICK_FLAG = false;
-            }
-
-        }
         mHandler = new Handler(Looper.getMainLooper()){
             @Override
             public void handleMessage(Message msg) {
@@ -185,17 +174,31 @@ public class MainActivity extends FragmentActivity {
                         cateTv = (TextView)findViewById(R.id.cateView);
                         addrTv = (TextView)findViewById(R.id.addrView);
                         foodImg = (ImageView)findViewById(R.id.cookImage);
-                        mapView = new MapView(MainActivity.this);
-                        mapView.setDaumMapApiKey("9db6272582177f1d7b0643e35e1993e9");
-                        mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
-                        mapViewContainer.addView(mapView);
-
+                        if(mapView == null){
+                            mapView = new MapView(MainActivity.this);
+                            mapView.setDaumMapApiKey("9db6272582177f1d7b0643e35e1993e9");
+                            mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
+                            mapViewContainer.addView(mapView);
+                        }
 
                         actionbar.removeAllTabs();
                         setDrawer(ActionBar.NAVIGATION_MODE_TABS);
                         for (String tab_name : tabs) {
                             actionbar.addTab(actionbar.newTab().setText(tab_name)
                                     .setTabListener(new TabListen()));
+                        }
+                        if(noonWidget.CLICK_FLAG == true) {
+                            if(noonWidget.contentValue.equals("content1")) {
+                                noonWidget.CLICK_FLAG = false;
+                                Log.i("widget", "widget->main, " + noonWidget.contentValue);
+                                int tab_position = noonWidget.themaValue;
+                                mDrawerList.performItemClick(mDrawerList.getChildAt(1), 1, mDrawerList.getItemIdAtPosition(1));
+                                actionbar.setSelectedNavigationItem(tab_position);
+                            } else if(noonWidget.contentValue.equals("content2")) {
+                                noonWidget.CLICK_FLAG = false;
+                                Log.i("widget", "widget->main," + noonWidget.contentValue);
+                                mDrawerList.performItemClick(mDrawerList.getChildAt(0), 0, mDrawerList.getItemIdAtPosition(0));
+                            }
                         }
                         break;
                 }
@@ -204,6 +207,20 @@ public class MainActivity extends FragmentActivity {
         };
         mHandler.sendEmptyMessage(ViewInt);
 
+        if(noonWidget.CLICK_FLAG == true) {
+            noonWidget.CLICK_FLAG = false;
+            if(noonWidget.contentValue.equals("content1")) {
+                Log.i("widget", "widget->main, " + noonWidget.contentValue);
+                int tab_position = noonWidget.themaValue;
+                mDrawerList.performItemClick(mDrawerList.getChildAt(0), 0, mDrawerList.getItemIdAtPosition(0));
+                //actionbar.getTabAt(tab_position).select();
+            }
+            if(noonWidget.contentValue.equals("content2")) {
+                Log.i("widget", "widget->main, " + noonWidget.contentValue);
+                mDrawerList.performItemClick(mDrawerList.getChildAt(0), 0, mDrawerList.getItemIdAtPosition(0));
+            }
+
+        }
     }
 
     @Override
@@ -373,7 +390,9 @@ public class MainActivity extends FragmentActivity {
             MapPOIItem marker;
             Item in1;
             int position = tab.getPosition();
-
+            if(noonWidget.CLICK_FLAG == true) {
+                position = noonWidget.themaValue;
+            }
             int size = MainActivity.ThemaItem.size();
             switch (position) {
                 case 0:

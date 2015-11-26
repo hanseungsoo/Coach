@@ -97,17 +97,6 @@ public class GetFood extends BroadcastReceiver {
             MainActivity.mmmm();
             Log.i("widget","receive:action.get ---> widget update");
 
-            mRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    noonWidget.contentValue="content2";
-                    MainActivity.mmmm();
-                }
-            };
-
-            mHandler = new Handler();
-            mHandler.postDelayed(mRunnable, 3600000);
-
         }
 
 
