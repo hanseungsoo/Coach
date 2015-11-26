@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
+import java.util.Calendar;
+
 /**
  * Created by han on 2015-11-24.
  */
@@ -179,12 +181,23 @@ public class optionActivity extends FragmentActivity {
     }
 
     public void onClicked(View v) {
-        noonWidget.contentValue = "content1";
+        if (noonWidget.contentValue.equals("content1")) {
+            noonWidget.contentValue = "content2";
+        } else {
+            noonWidget.contentValue="content1";
+        }
         MainActivity.mmmm();
     }
 
     public void onClicked2(View v) {
         Intent intent = new Intent(this, DBActivity.class);
         startActivity(intent);
+    }
+    public void onClicked3(View v) {
+        Calendar c = Calendar.getInstance();
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int min = c.get(Calendar.MINUTE)+1;
+        registerAlarm rA = new registerAlarm(getApplicationContext());
+        rA.testAM("ACTION.GET.NORMAL",hour,min);
     }
 }

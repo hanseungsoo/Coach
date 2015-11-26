@@ -26,6 +26,7 @@
                 <action android:name="chae.widget.right"/>
                 <action android:name="chae.widget.click1"/>
                 <action android:name="chae.widget.click2"/>
+                <action android:name="chae.widget.swap"/>
 
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_configuration"/>
@@ -50,6 +51,7 @@
                 <action android:name="ACTION.GET.FIVE"/>
                 <action android:name="ACTION.GET.SIX"/>
                 <action android:name="ACTION.GET.SEVEN"/>
+                <action android:name="ACTION.GET.NORMAL"/>
 
             </intent-filter>
         </receiver>

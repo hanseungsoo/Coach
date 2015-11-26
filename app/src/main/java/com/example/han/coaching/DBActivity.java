@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by han on 2015-11-24.
@@ -72,6 +73,17 @@ public class DBActivity extends Activity {
     public void Button4CLick(View v) {
         //거주지 정리
         dbHandler.abode_clean();
+    }
+
+    public void Button5Click(View v) {
+        String nowDate,lunarDate;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        Date date = new Date();
+        nowDate = sdf.format(date);
+        LunarCalendar lunar = new LunarCalendar();
+        lunarDate = lunar.toLunar(nowDate);
+        tv.setText("today: " + nowDate +"\nLunar: "+ lunarDate);
+
     }
 
     public void TimeChecked(View v) {

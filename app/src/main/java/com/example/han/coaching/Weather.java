@@ -76,7 +76,8 @@ public class Weather extends BroadcastReceiver {
                 JSONArray results = searchresult.getJSONArray("weather");
                 JSONObject json = new JSONObject();
                 json = results.getJSONObject(0);
-                staticMerge.temp = json.getString("description");
+                int id = json.getInt("id");
+                staticMerge.idTotemp(id);
             }catch (Exception e){
                 StringWriter sw = new StringWriter();
                 e.printStackTrace(new PrintWriter(sw));

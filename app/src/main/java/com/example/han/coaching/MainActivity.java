@@ -75,7 +75,7 @@ public class MainActivity extends FragmentActivity {
             make_dummy(); }
         Intent a = new Intent(this, GpsService.class);
         startService(a);
-
+        System.setProperty("http.keepAlive","false");
         //珥덇린�솕&�븣�엺
         SharedInit SI = new SharedInit(getApplicationContext());
         registerAlarm rA = new registerAlarm(getApplicationContext());
@@ -87,9 +87,9 @@ public class MainActivity extends FragmentActivity {
             rA.registerplace();
             rA.registerOneWeek();*/
             rA.registerDong("Detailaddr");
-            rA.registerNews(30);
+            rA.registerNews(20);
         }
-        rA.testAM("ACTION.GET.ONE",19,29);
+        rA.testAM("ACTION.GET.ONE",21,45);
 
         //諛붿씤�뵫
         actionbar = getActionBar();
@@ -165,6 +165,9 @@ public class MainActivity extends FragmentActivity {
                                 }
                             });
                         }
+                        if(noonWidget.CLICK_FLAG == true) {
+                            mDrawerList.performItemClick(mDrawerList.getChildAt(3), 3, mDrawerList.getItemIdAtPosition(3));
+                        }
                         break;
                     case 1:
                         setContentView(R.layout.activity_main);
@@ -192,7 +195,7 @@ public class MainActivity extends FragmentActivity {
                             if(noonWidget.contentValue.equals("content1")) {
                                 Log.i("widget", "widget->main, " + noonWidget.contentValue);
                                 int tab_position = noonWidget.themaValue;
-                                mDrawerList.performItemClick(mDrawerList.getChildAt(1), 1, mDrawerList.getItemIdAtPosition(1));
+                                mDrawerList.performItemClick(mDrawerList.getChildAt(0), 0, mDrawerList.getItemIdAtPosition(0));
                                 actionbar.setSelectedNavigationItem(tab_position);
                             }
                         }
@@ -274,7 +277,12 @@ public class MainActivity extends FragmentActivity {
                 if(MainActivity.NewsNews.size()>0){
                     newstitle.setText(NewsNews.get(0).getTitle());
                     newsdesc.setText(NewsNews.get(0).getDesc());
-                    new DownloadImageTask(newsimage).execute(NewsNews.get(0).getImageUrl());
+                    if(NewsNews.get(0).getImageUrl().equals("")){
+                        NewsNews.get(0).setImageUrl("http://222.116.135.76:8080/Noon/images/noon.png");
+                        new DownloadImageTask(newsimage).execute(NewsNews.get(0).getImageUrl());
+                    }else{
+                        new DownloadImageTask(newsimage).execute(NewsNews.get(0).getImageUrl());
+                    }
                     newsbutton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -324,6 +332,13 @@ public class MainActivity extends FragmentActivity {
             item.phone = "010-2043-5392";
             ThemaItem.add(i-1,item);
         }
+
+        NewsItem item = new NewsItem();
+        item.setTitle("눈치코칭 뉴스");
+        item.setDesc("눈치코칭입니다.");
+        item.setImageUrl("11");
+        item.setLink("http://222.116.135.76:8080/Noon/noon.jsp");
+        NewsNews.add(0, item);
     }
 
     public static void mmmm() {
@@ -373,9 +388,6 @@ public class MainActivity extends FragmentActivity {
             MapPOIItem marker;
             Item in1;
             int position = tab.getPosition();
-            if(noonWidget.CLICK_FLAG == true) {
-                position = noonWidget.themaValue;
-            }
             int size = MainActivity.ThemaItem.size();
             switch (position) {
                 case 0:
@@ -389,7 +401,12 @@ public class MainActivity extends FragmentActivity {
                             telTv.setText("" + in1.phone);
                             cateTv.setText("" + in1.category);
                             addrTv.setText("" + in1.address);
-                            new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                            if(in1.imageUrl.equals("")){
+                                in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
+                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                            }else{
+                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                            }
                             marker.setItemName("Default Marker");
                             marker.setTag(0);
                             marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
@@ -410,7 +427,12 @@ public class MainActivity extends FragmentActivity {
                             telTv.setText("" + in1.phone);
                             cateTv.setText("" + in1.category);
                             addrTv.setText("" + in1.address);
-                            new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                            if(in1.imageUrl.equals("")){
+                                in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
+                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                            }else{
+                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                            }
                             marker.setItemName("Default Marker");
                             marker.setTag(0);
                             marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
@@ -431,7 +453,12 @@ public class MainActivity extends FragmentActivity {
                             telTv.setText("" + in1.phone);
                             cateTv.setText("" + in1.category);
                             addrTv.setText("" + in1.address);
-                            new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                            if(in1.imageUrl.equals("")){
+                                in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
+                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                            }else{
+                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                            }
                             marker.setItemName("Default Marker");
                             marker.setTag(0);
                             marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
@@ -452,7 +479,12 @@ public class MainActivity extends FragmentActivity {
                             telTv.setText("" + in1.phone);
                             cateTv.setText("" + in1.category);
                             addrTv.setText("" + in1.address);
-                            new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                            if(in1.imageUrl.equals("")){
+                                in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
+                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                            }else{
+                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                            }
                             marker.setItemName("Default Marker");
                             marker.setTag(0);
                             marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));

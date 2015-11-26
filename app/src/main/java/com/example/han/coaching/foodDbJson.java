@@ -53,7 +53,7 @@ public class foodDbJson extends AsyncTask<String,Void,Void> {
                             item.title = "오늘은 기념일이 아니거나";
                             item.category = " ";
                             item.imageUrl = "http://222.116.135.76:8080/Noon/images/noon.png";
-                            item.address = "(X)address";
+                            item.address = "No Address";
                             item.phone = "주변에 해당하는 음식점이 없습니다.";
                             MainActivity.ThemaItem.set(0, item);
                             registerAlarm rA = new registerAlarm(MainActivity.mContext);
@@ -158,6 +158,7 @@ public class foodDbJson extends AsyncTask<String,Void,Void> {
                         SaveData svData = new SaveData(MainActivity.mContext);
                         svData.save("SharedFood");
                         MainActivity.ViewInt = 1;
+
                     } else {
                         MainActivity.ThemaItem.set(3, itemList.get((int) (Math.random() * 15)));
                         registerAlarm rA = new registerAlarm(MainActivity.mContext);
@@ -166,7 +167,10 @@ public class foodDbJson extends AsyncTask<String,Void,Void> {
                         rA.AlarmCancel("ACTION.SET.NEWS");
                         rA.registerNews(60 * 60 * 1000);
                         MainActivity.ViewInt = 1;
+                        noonWidget.contentValue="content1";
+                        MainActivity.mmmm();
                     }
+
                 }
 
                 @Override
@@ -199,7 +203,6 @@ public class foodDbJson extends AsyncTask<String,Void,Void> {
             http.setDoInput(true);
             http.setDoOutput(true);
             http.setRequestMethod("POST");
-
             BufferedReader in = new BufferedReader(new InputStreamReader(http.getInputStream(), "UTF-8"));
             //InputStream in = http.getInputStream();
 

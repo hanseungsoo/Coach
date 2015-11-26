@@ -39,6 +39,14 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="Button5Click"
+            android:layout_below="@+id/button22"
+            android:layout_toRightOf="@+id/button3"
+            android:layout_toEndOf="@+id/button3" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="거주지 정리"
             android:onClick="Button4CLick"
             android:id="@+id/button4"

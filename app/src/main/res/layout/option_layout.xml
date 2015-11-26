@@ -80,6 +80,11 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="1분 후 음식집추천"
+        android:onClick="onClicked3"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Database check"
         android:onClick="onClicked2"/>
     <Button

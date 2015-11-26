@@ -43,6 +43,7 @@ public class noonWidget extends AppWidgetProvider {
         super.onEnabled(context);
         themaValue = 0;
         t_Value = "thema1";
+        Log.i("widget","onEnabled");
     }
 
     @Override
@@ -160,7 +161,6 @@ public class noonWidget extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, final AppWidgetManager appWidgetManager,final int appWidgetId) {
 
-
         String content = contentValue;
         int layoutId;
         if ("content1".equals(content)) {
@@ -217,7 +217,12 @@ public class noonWidget extends AppWidgetProvider {
 
             updateViews.setTextViewText(R.id.widget_tv, "뉴스 추천");
             updateViews.setTextViewText(R.id.widget_title, MainActivity.NewsNews.get(0).getTitle());
-            updateViews.setTextViewText(R.id.widget_sub, MainActivity.NewsNews.get(0).getDesc().substring(0,30)+"...");
+            if(MainActivity.NewsNews.get(0).getDesc().length() >=30) {
+                updateViews.setTextViewText(R.id.widget_sub, MainActivity.NewsNews.get(0).getDesc().substring(0,30)+"...");
+            } else {
+                updateViews.setTextViewText(R.id.widget_sub, MainActivity.NewsNews.get(0).getDesc()+"...");
+            }
+
 
             Intent click_intent = new Intent();
             click_intent.setAction("chae.widget.click2");

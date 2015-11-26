@@ -24,21 +24,22 @@ public class GetFood extends BroadcastReceiver {
     public void getItem(Intent intent,String index,String what){
 
         String query ="";
-        String today_S,today_L,nowDate;
-        SimpleDateFormat sdf = new SimpleDateFormat("MMdd");
+        String today_S,today_L,nowDate,weather;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         Date date = new Date();
         nowDate = sdf.format(date);
         LunarCalendar lunar = new LunarCalendar();
-        today_L = lunar.toLunar(nowDate);
-        today_S = nowDate;
+        today_S = nowDate.substring(4, 8);
+        today_L = lunar.toLunar(nowDate).toString().substring(4, 8);
+        weather = staticMerge.temp;
         try{
-            query = URLEncoder.encode("아침", "utf-8");
+            query = URLEncoder.encode(what, "utf-8");
         }catch (Exception e){}
         Log.i("aaaa", "main onCreate : foodDbJson");
-        //String param = "tbName=noon_food&col=food_name&food_wea="+GetFood+"&food_time="+query;
-        String param = "tbName=noon_food&col=food_name&food_wea=rain&food_time="+query;
+        String param = "tbName=noon_food&col=food_name&food_wea="+weather+"&food_time="+query;
         String param2 = "tbName=anniv&col=food_name&SoL=S&date="+today_S;
         String param3 =  "tbName=anniv&col=food_name&SoL=L&date="+today_L;
+
         foodDbJson fD = new foodDbJson();
         fD.execute(param,param2,param3);
 
@@ -55,6 +56,40 @@ public class GetFood extends BroadcastReceiver {
         }
         registerAlarm rA = new registerAlarm(context);
         rA.registerAM(intent.getAction(),index);
+    }
+    public void getItem(String what){
+
+        String query ="";
+        String today_S,today_L,nowDate,weather;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        Date date = new Date();
+        nowDate = sdf.format(date);
+        LunarCalendar lunar = new LunarCalendar();
+        today_S = nowDate.substring(4, 8);
+        today_L = lunar.toLunar(nowDate).toString().substring(4, 8);
+        weather = staticMerge.temp;
+        try{
+            query = URLEncoder.encode(what, "utf-8");
+        }catch (Exception e){}
+        Log.i("aaaa", "main onCreate : foodDbJson");
+        String param = "tbName=noon_food&col=food_name&food_wea="+weather+"&food_time="+query;
+        String param2 = "tbName=anniv&col=food_name&SoL=S&date="+today_S;
+        String param3 =  "tbName=anniv&col=food_name&SoL=L&date="+today_L;
+
+        foodDbJson fD = new foodDbJson();
+        fD.execute(param,param2,param3);
+
+        try {
+            Log.i("aaaa", "-----------------------------" + staticMerge.temp);
+
+
+        } catch (Exception e) {
+
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            String exceptionAsStrting = sw.toString();
+            Log.e("aaaa", exceptionAsStrting);
+        }
     }
     @Override
     public void onReceive(final Context context, Intent intent) {
@@ -90,6 +125,10 @@ public class GetFood extends BroadcastReceiver {
             staticMerge.what = "후식";
             getItem(intent,"6",staticMerge.what);
 
+        }
+        if(intent.getAction().equals("ACTION.GET.NORMAL")){
+            staticMerge.what = "수동";
+            getItem(staticMerge.what);
         }
         if(intent.getAction().substring(0, 10).equals("ACTION.GET"))
         {

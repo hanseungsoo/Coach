@@ -35,9 +35,6 @@ public class settingBroadcast extends BroadcastReceiver {
         if(intent.getAction().equals("ACTION.SET.NEWS")) {
             GetNewsData GND = new GetNewsData();
             GND.execute();
-
-            noonWidget.contentValue = "content2";
-            MainActivity.mmmm();
         }
     }
 }

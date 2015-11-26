@@ -33,7 +33,7 @@ public class GetNewsData extends AsyncTask<Void,Void,Void> {
 
             factory.setNamespaceAware(true);
             XmlPullParser xpp = factory.newPullParser();
-
+            MainActivity.NewsNews.clear();
             url = new URL(uri);
             InputStream in = url.openStream();
             xpp.setInput(in, "utf-8");
@@ -87,8 +87,9 @@ public class GetNewsData extends AsyncTask<Void,Void,Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-
         super.onPostExecute(aVoid);
+        noonWidget.contentValue = "content2";
+        MainActivity.mmmm();
     }
 
 }
