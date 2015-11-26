@@ -2,10 +2,8 @@ package com.example.han.coaching;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,19 +13,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuInflater;
-import android.view.View;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -95,7 +89,7 @@ public class MainActivity extends FragmentActivity {
             rA.registerDong("Detailaddr");
             rA.registerNews(10);
         }
-        rA.testAM("ACTION.GET.ONE",17,47);
+        rA.testAM("ACTION.GET.ONE",14,19);
 
         //諛붿씤�뵫
         actionbar = getActionBar();
@@ -150,7 +144,7 @@ public class MainActivity extends FragmentActivity {
                 Log.i("widget", "widget->main, content1");
                 int list_position = 0;
                 int tab_position = noonWidget.themaValue;
-                mDrawerList.performItemClick(mDrawerList.getChildAt(0), 0, mDrawerList.getItemIdAtPosition(0));
+                mDrawerList.performItemClick(mDrawerList.getChildAt(1), 1, mDrawerList.getItemIdAtPosition(1));
                 actionbar.setSelectedNavigationItem(tab_position);
                 noonWidget.CLICK_FLAG = false;
             }

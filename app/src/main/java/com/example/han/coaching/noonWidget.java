@@ -27,7 +27,7 @@ public class noonWidget extends AppWidgetProvider {
     public static int themaValue=0;
     public static String t_Value="thema1";
     private static DisplayImageOptions displayOptions;
-    public static String contentValue="content5";
+    public static String contentValue="content2";
     public static String ph="000-0000";
     public static boolean CLICK_FLAG = false;
 
@@ -137,7 +137,7 @@ public class noonWidget extends AppWidgetProvider {
             noonDb();
             Log.i("widget", "음식집 Clicked");
             Intent i = new Intent();
-            i.setClassName("com.example.han.realnoon", "com.example.han.realnoon.MainActivity");
+            i.setClassName("com.example.han.coaching", "com.example.han.coaching.MainActivity");
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
             context.startActivity(i);
         }
@@ -146,7 +146,7 @@ public class noonWidget extends AppWidgetProvider {
             CLICK_FLAG = true;
             Log.i("widget", "뉴스 Clicked");
             Intent i = new Intent();
-            i.setClassName("com.example.han.realnoon", "com.example.han.realnoon.MainActivity");
+            i.setClassName("com.example.han.coaching", "com.example.han.coaching.MainActivity");
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
             context.startActivity(i);
         }
@@ -215,15 +215,18 @@ public class noonWidget extends AppWidgetProvider {
 
             updateViews.setTextViewText(R.id.widget_tv, "뉴스 추천");
             updateViews.setTextViewText(R.id.widget_title, MainActivity.NewsNews.get(0).getTitle());
-            //updateViews.setTextViewText(R.id.widget_sub, GetNewsData.descvec.get(0).toString().substring(0,30)+"...");
-
+            updateViews.setTextViewText(R.id.widget_sub, MainActivity.NewsNews.get(0).getDesc().substring(0,30)+"...");
 
             Intent click_intent = new Intent();
             click_intent.setAction("chae.widget.click2");
             PendingIntent pendingIntent_C = PendingIntent.getBroadcast(context, 0, click_intent, PendingIntent.FLAG_CANCEL_CURRENT);
             updateViews.setOnClickPendingIntent(R.id.layout2, pendingIntent_C);
-
-            String url = "http://222.116.135.76:8080/Noon/images/noon.png";
+            String url;
+            if(MainActivity.NewsNews.get(0).getImageUrl().length() >= 10) {
+                url = MainActivity.NewsNews.get(0).getImageUrl();
+            }else {
+                url = "http://222.116.135.76:8080/Noon/images/noon.png";
+            }
             ImageSize minImazeSize = new ImageSize(120,400);
             ImageLoader.getInstance().loadImage(url, minImazeSize, displayOptions, new SimpleImageLoadingListener() {
                 @Override
