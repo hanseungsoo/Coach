@@ -1,6 +1,7 @@
 package com.example.han.coaching;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -88,6 +89,7 @@ public class GetNewsData extends AsyncTask<Void,Void,Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
+        Log.i("aaaa","news!!!!!!");
         noonWidget.contentValue = "content2";
         MainActivity.mmmm();
     }

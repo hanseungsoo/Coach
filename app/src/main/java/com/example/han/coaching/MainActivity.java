@@ -166,7 +166,7 @@ public class MainActivity extends FragmentActivity {
                             });
                         }
                         if(noonWidget.CLICK_FLAG == true) {
-                            mDrawerList.performItemClick(mDrawerList.getChildAt(3), 3, mDrawerList.getItemIdAtPosition(3));
+                            noonWidget.CLICK_FLAG = false;
                         }
                         break;
                     case 1:
@@ -177,12 +177,12 @@ public class MainActivity extends FragmentActivity {
                         cateTv = (TextView)findViewById(R.id.cateView);
                         addrTv = (TextView)findViewById(R.id.addrView);
                         foodImg = (ImageView)findViewById(R.id.cookImage);
-                        if(mapView == null){
-                            mapView = new MapView(MainActivity.this);
-                            mapView.setDaumMapApiKey("9db6272582177f1d7b0643e35e1993e9");
-                            mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
-                            mapViewContainer.addView(mapView);
-                        }
+                        mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
+                        mapViewContainer.removeAllViews();
+                        mapView = null;
+                        mapView = new MapView(MainActivity.this);
+                        mapView.setDaumMapApiKey("9db6272582177f1d7b0643e35e1993e9");
+                        mapViewContainer.addView(mapView);
 
                         actionbar.removeAllTabs();
                         setDrawer(ActionBar.NAVIGATION_MODE_TABS);
@@ -195,10 +195,15 @@ public class MainActivity extends FragmentActivity {
                             if(noonWidget.contentValue.equals("content1")) {
                                 Log.i("widget", "widget->main, " + noonWidget.contentValue);
                                 int tab_position = noonWidget.themaValue;
-                                mDrawerList.performItemClick(mDrawerList.getChildAt(0), 0, mDrawerList.getItemIdAtPosition(0));
                                 actionbar.setSelectedNavigationItem(tab_position);
                             }
                         }
+                        /*if(staticMerge.timer){
+                            Log.i("aaaa","타이머가 울렸네~");
+                            registerAlarm rA = new registerAlarm(MainActivity.mContext);
+                            rA.registerNews(30);
+                            staticMerge.timer = false;
+                        }*/
                         break;
                 }
 
@@ -252,13 +257,14 @@ public class MainActivity extends FragmentActivity {
                 cateTv = (TextView)findViewById(R.id.cateView);
                 addrTv = (TextView)findViewById(R.id.addrView);
                 foodImg = (ImageView)findViewById(R.id.cookImage);
-                if(mapView == null)
-                {
-                    mapView = new MapView(MainActivity.this);
-                    mapView.setDaumMapApiKey("9db6272582177f1d7b0643e35e1993e9");
-                    mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
-                    mapViewContainer.addView(mapView);
-                }
+                mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
+                mapViewContainer.removeAllViews();
+                mapView = null;
+                mapView = new MapView(MainActivity.this);
+                mapView.setDaumMapApiKey("9db6272582177f1d7b0643e35e1993e9");
+
+                mapViewContainer.addView(mapView);
+
 
                 actionbar.removeAllTabs();
                 setDrawer(ActionBar.NAVIGATION_MODE_TABS);

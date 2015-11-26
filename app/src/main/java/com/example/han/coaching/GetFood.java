@@ -21,7 +21,7 @@ public class GetFood extends BroadcastReceiver {
     Runnable mRunnable;
     Handler mHandler;
 
-    public void getItem(Intent intent,String index,String what){
+    public void getItem(Intent intent,String index,String what,int id){
 
         String query ="";
         String today_S,today_L,nowDate,weather;
@@ -55,7 +55,7 @@ public class GetFood extends BroadcastReceiver {
             Log.e("aaaa", exceptionAsStrting);
         }
         registerAlarm rA = new registerAlarm(context);
-        rA.registerAM(intent.getAction(),index);
+        rA.registerAM(intent.getAction(),index,id);
     }
     public void getItem(String what){
 
@@ -96,34 +96,35 @@ public class GetFood extends BroadcastReceiver {
         this.context = context;
 
         if(intent.getAction().equals("ACTION.GET.ONE")){
+            Log.i("aaaa","OOOOOOOOOOOOOOOOOOOOONNNNNNNNNNNNNNNNEEEEEEEE");
             staticMerge.what = "아침";
-            getItem(intent,"0",staticMerge.what);
+            getItem(intent,"0",staticMerge.what,1);
         }
         if(intent.getAction().equals("ACTION.GET.TWO")){
             staticMerge.what = "아점";
-            getItem(intent,"1",staticMerge.what);
+            getItem(intent,"1",staticMerge.what,2);
         }
         if(intent.getAction().equals("ACTION.GET.THREE")){
             staticMerge.what = "점심";
-            getItem(intent,"2",staticMerge.what);
+            getItem(intent,"2",staticMerge.what,3);
 
         }
         if(intent.getAction().equals("ACTION.GET.FOUR")){
             staticMerge.what = "점저";
-            getItem(intent,"3",staticMerge.what);
+            getItem(intent,"3",staticMerge.what,4);
         }
         if(intent.getAction().equals("ACTION.GET.FIVE")){
             staticMerge.what = "저녁";
-            getItem(intent,"4",staticMerge.what);
+            getItem(intent,"4",staticMerge.what,5);
 
         }
         if(intent.getAction().equals("ACTION.GET.SIX")){
             staticMerge.what="야식";
-            getItem(intent,"5",staticMerge.what);
+            getItem(intent,"5",staticMerge.what,6);
         }
         if(intent.getAction().equals("ACTION.GET.SEVEN")){
             staticMerge.what = "후식";
-            getItem(intent,"6",staticMerge.what);
+            getItem(intent,"6",staticMerge.what,7);
 
         }
         if(intent.getAction().equals("ACTION.GET.NORMAL")){

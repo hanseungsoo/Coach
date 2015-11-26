@@ -83,7 +83,7 @@ public class optionActivity extends FragmentActivity {
                 if (isChecked) {
                     SI.setSharedTrue("0",true);
                 } else {
-                    RA.AlarmCancel("ACTION.GET.ONE");
+                    RA.AlarmCancel("ACTION.GET.ONE",1);
                     SI.setSharedTrue("0", false);
                 }
             }
@@ -94,7 +94,7 @@ public class optionActivity extends FragmentActivity {
                 if (isChecked) {
                     SI.setSharedTrue("1", true);
                 } else {
-                    RA.AlarmCancel("ACTION.GET.TWO");
+                    RA.AlarmCancel("ACTION.GET.TWO",2);
                     SI.setSharedTrue("1", false);
                 }
             }
@@ -105,7 +105,7 @@ public class optionActivity extends FragmentActivity {
                 if (isChecked) {
                     SI.setSharedTrue("2", true);
                 } else {
-                    RA.AlarmCancel("ACTION.GET.THREE");
+                    RA.AlarmCancel("ACTION.GET.THREE",3);
                     SI.setSharedTrue("2", false);
                 }
             }
@@ -116,7 +116,7 @@ public class optionActivity extends FragmentActivity {
                 if (isChecked) {
                     SI.setSharedTrue("3", true);
                 } else {
-                    RA.AlarmCancel("ACTION.GET.FOUR");
+                    RA.AlarmCancel("ACTION.GET.FOUR",4);
                     SI.setSharedTrue("3", false);
                 }
             }
@@ -127,7 +127,7 @@ public class optionActivity extends FragmentActivity {
                 if (isChecked) {
                     SI.setSharedTrue("4", true);
                 } else {
-                    RA.AlarmCancel("ACTION.GET.FIVE");
+                    RA.AlarmCancel("ACTION.GET.FIVE",5);
                     SI.setSharedTrue("4", false);
                 }
             }
@@ -138,7 +138,7 @@ public class optionActivity extends FragmentActivity {
                 if (isChecked) {
                     SI.setSharedTrue("5", true);
                 } else {
-                    RA.AlarmCancel("ACTION.GET.SIX");
+                    RA.AlarmCancel("ACTION.GET.SIX",6);
                     SI.setSharedTrue("5", false);
                 }
             }
@@ -149,7 +149,7 @@ public class optionActivity extends FragmentActivity {
                 if (isChecked) {
                     SI.setSharedTrue("6", true);
                 } else {
-                    RA.AlarmCancel("ACTION.GET.FIVE");
+                    RA.AlarmCancel("ACTION.GET.FIVE",7);
                     SI.setSharedTrue("6", false);
                 }
             }

@@ -56,16 +56,9 @@ public class foodDbJson extends AsyncTask<String,Void,Void> {
                             item.address = "No Address";
                             item.phone = "주변에 해당하는 음식점이 없습니다.";
                             MainActivity.ThemaItem.set(0, item);
-                            registerAlarm rA = new registerAlarm(MainActivity.mContext);
-                            rA.AlarmCancel("ACTION.SET.NEWS");
-                            rA.registerNews(60*60*1000);
                         }else{
 
                             MainActivity.ThemaItem.set(0, itemList.get(0));
-                            registerAlarm rA = new registerAlarm(MainActivity.mContext);
-
-                            rA.AlarmCancel("ACTION.SET.NEWS");
-                            rA.registerNews(60 * 60 * 1000);
                         }
                     }
 
@@ -94,16 +87,9 @@ public class foodDbJson extends AsyncTask<String,Void,Void> {
                         item.category = "음식점이 없습니다.";
                         item.address = "(X)address";
                         item.phone = "추천할만한";
-                        MainActivity.ThemaItem.set(1,item);
-                        registerAlarm rA = new registerAlarm(MainActivity.mContext);
-                        rA.AlarmCancel("ACTION.SET.NEWS");
-                        rA.registerNews(60*60*1000);
+                        MainActivity.ThemaItem.set(1, item);
                     }else{
                         MainActivity.ThemaItem.set(1, itemList.get(0));
-                        registerAlarm rA = new registerAlarm(MainActivity.mContext);
-
-                        rA.AlarmCancel("ACTION.SET.NEWS");
-                        rA.registerNews(60 * 60 * 1000);
                     }
                 }
 
@@ -123,15 +109,8 @@ public class foodDbJson extends AsyncTask<String,Void,Void> {
                         item.address = "(X)address";
                         item.phone = "추천할만한";
                         MainActivity.ThemaItem.set(2, item);
-                        registerAlarm rA = new registerAlarm(MainActivity.mContext);
-                        rA.AlarmCancel("ACTION.SET.NEWS");
-                        rA.registerNews(60*60*1000);
                     }else{
                         MainActivity.ThemaItem.set(2, itemList.get(0));
-                        registerAlarm rA = new registerAlarm(MainActivity.mContext);
-                        rA.AlarmCancel("ACTION.SET.NEWS");
-                        rA.registerNews(60 * 60 * 1000);
-
                     }
                 }
 
@@ -152,23 +131,28 @@ public class foodDbJson extends AsyncTask<String,Void,Void> {
                         item.imageUrl = "http://222.116.135.76:8080/Noon/images/noon.png";
                         item.phone = "추천할만한";
                         MainActivity.ThemaItem.set(3, item);
-                        registerAlarm rA = new registerAlarm(MainActivity.mContext);
-                        rA.AlarmCancel("ACTION.SET.NEWS");
-                        rA.registerNews(60 * 60 * 1000);
                         SaveData svData = new SaveData(MainActivity.mContext);
                         svData.save("SharedFood");
                         MainActivity.ViewInt = 1;
+                        staticMerge.timer = true;
+                        /*MainActivity.mHandler.sendEmptyMessage(1);*/
+                        registerAlarm rA = new registerAlarm(MainActivity.mContext);
+                        rA.registerNews(60*60);
+
 
                     } else {
                         MainActivity.ThemaItem.set(3, itemList.get((int) (Math.random() * 15)));
-                        registerAlarm rA = new registerAlarm(MainActivity.mContext);
                         SaveData svData = new SaveData(MainActivity.mContext);
                         svData.save("SharedFood");
-                        rA.AlarmCancel("ACTION.SET.NEWS");
-                        rA.registerNews(60 * 60 * 1000);
+
                         MainActivity.ViewInt = 1;
                         noonWidget.contentValue="content1";
                         MainActivity.mmmm();
+                        staticMerge.timer = true;
+                        /*MainActivity.mHandler.sendEmptyMessage(1);*/
+                        registerAlarm rA = new registerAlarm(MainActivity.mContext);
+                        rA.registerNews(60*60);
+
                     }
 
                 }

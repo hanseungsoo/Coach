@@ -11,6 +11,7 @@ public class staticMerge {
     static String dong = "";
     static String[] finish_food = new String[2];
     static ArrayList<String> food = new ArrayList<>();
+    static boolean timer = false;
 
     public static void idTotemp (int i) {
         if(200<=i && i<300) {

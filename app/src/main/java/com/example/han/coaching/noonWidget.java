@@ -14,6 +14,7 @@ import android.widget.RemoteViews;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
@@ -229,17 +230,23 @@ public class noonWidget extends AppWidgetProvider {
             PendingIntent pendingIntent_C = PendingIntent.getBroadcast(context, 0, click_intent, PendingIntent.FLAG_CANCEL_CURRENT);
             updateViews.setOnClickPendingIntent(R.id.layout2, pendingIntent_C);
             String url;
-            if(MainActivity.NewsNews.get(0).getImageUrl().length() >= 10) {
+            /*if(MainActivity.NewsNews.get(0).getImageUrl().length() >= 10) {
                 url = MainActivity.NewsNews.get(0).getImageUrl();
             }else {
                 url = "http://222.116.135.76:8080/Noon/images/noon.png";
-            }
+            }*/
+            url = "http://222.116.135.76:8080/Noon/images/noon.png";
             ImageSize minImazeSize = new ImageSize(120,400);
             ImageLoader.getInstance().loadImage(url, minImazeSize, displayOptions, new SimpleImageLoadingListener() {
                 @Override
                 public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                     updateViews.setImageViewBitmap(R.id.widget_image, loadedImage);
                     appWidgetManager.updateAppWidget(appWidgetId, updateViews);
+                }
+
+                @Override
+                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                    super.onLoadingFailed(imageUri, view, failReason);
                 }
             });
         } else if ("content3".equals(content)) {

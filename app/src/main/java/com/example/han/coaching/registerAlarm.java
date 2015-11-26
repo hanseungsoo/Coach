@@ -38,7 +38,7 @@ public class registerAlarm {
             Intent intentMyService;
             intentMyService = new Intent(index);
             AlarmManager am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-            PendingIntent sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
+            PendingIntent sender = PendingIntent.getBroadcast(context, 1, intentMyService, 0);
 
             // 서비스 시작
             am.set(AlarmManager.RTC_WAKEUP, triggerTime, sender);
@@ -57,16 +57,16 @@ public class registerAlarm {
             Intent intentMyService;
             intentMyService = new Intent("ACTION.SET.NEWS");
             AlarmManager am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-            PendingIntent sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
+            PendingIntent sender = PendingIntent.getBroadcast(context, 800, intentMyService, 0);
             // 서비스 시작
-            am.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), oneHour, sender);
+            am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), sender);
         } catch (Exception e) {
             Log.d("MpMainActivity", e.getMessage() + "");
 
             e.printStackTrace();
         }
     }
-    public void registerAM(String idIndex,String index) {
+    public void registerAM(String idIndex,String index,int ind) {
         SharedInit SI = new SharedInit(context);
         try {
             SI.setSharedTimeLong(index, SI.getSharedTime(index));
@@ -75,7 +75,7 @@ public class registerAlarm {
             intentMyService = new Intent(idIndex);
 
             AlarmManager am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-            PendingIntent sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
+            PendingIntent sender = PendingIntent.getBroadcast(context, ind, intentMyService, 0);
 
             // 서비스 시작
             am.set(AlarmManager.RTC_WAKEUP, SI.getSharedTime(index), sender);
@@ -99,7 +99,7 @@ public class registerAlarm {
             intentMyService.putExtra("lon",location.getLongitude());
 
             AlarmManager am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-            PendingIntent sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
+            PendingIntent sender = PendingIntent.getBroadcast(context, 9, intentMyService, 0);
 
             // 서비스 시작
             am.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), oneHour, sender);
@@ -124,7 +124,7 @@ public class registerAlarm {
             intentMyService.putExtra("lon",location.getLongitude());
 
             AlarmManager am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-            PendingIntent sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
+            PendingIntent sender = PendingIntent.getBroadcast(context, 8, intentMyService, 0);
 
             // 서비스 시작
             am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), sender);
@@ -211,41 +211,41 @@ public class registerAlarm {
         Intent intentMyService;
         PendingIntent sender;
         intentMyService = new Intent("ACTION.GET.ONE");
-        sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
+        sender = PendingIntent.getBroadcast(context, 1, intentMyService, 0);
         am.set(AlarmManager.RTC_WAKEUP, SI.getSharedTime("0"), sender);
 
         intentMyService = new Intent("ACTION.GET.TWO");
-        sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
+        sender = PendingIntent.getBroadcast(context, 2, intentMyService, 0);
         am.set(AlarmManager.RTC_WAKEUP, SI.getSharedTime("1"), sender);
 
         intentMyService = new Intent("ACTION.GET.THREE");
-        sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
+        sender = PendingIntent.getBroadcast(context, 3, intentMyService, 0);
         am.set(AlarmManager.RTC_WAKEUP, SI.getSharedTime("2"), sender);
 
         intentMyService = new Intent("ACTION.GET.FOUR");
-        sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
+        sender = PendingIntent.getBroadcast(context, 4, intentMyService, 0);
         am.set(AlarmManager.RTC_WAKEUP, SI.getSharedTime("3"), sender);
 
         intentMyService = new Intent("ACTION.GET.FIVE");
-        sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
+        sender = PendingIntent.getBroadcast(context, 5, intentMyService, 0);
         am.set(AlarmManager.RTC_WAKEUP, SI.getSharedTime("4"), sender);
 
         intentMyService = new Intent("ACTION.GET.SIX");
-        sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
+        sender = PendingIntent.getBroadcast(context, 6, intentMyService, 0);
         am.set(AlarmManager.RTC_WAKEUP, SI.getSharedTime("5"), sender);
 
         intentMyService = new Intent("ACTION.GET.SEVEN");
-        sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
+        sender = PendingIntent.getBroadcast(context, 7, intentMyService, 0);
         am.set(AlarmManager.RTC_WAKEUP, SI.getSharedTime("6"), sender);
 
     }
-    public void AlarmCancel(String index){
+    public void AlarmCancel(String index,int id){
         AlarmManager am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
 
         Intent intentMyService;
         PendingIntent sender;
         intentMyService = new Intent(index);
-        sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
+        sender = PendingIntent.getBroadcast(context, id, intentMyService, 0);
         am.cancel(sender);
         sender.cancel();
     }
