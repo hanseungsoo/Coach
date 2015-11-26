@@ -188,16 +188,12 @@ public class MainActivity extends FragmentActivity {
                                     .setTabListener(new TabListen()));
                         }
                         if(noonWidget.CLICK_FLAG == true) {
+                            noonWidget.CLICK_FLAG = false;
                             if(noonWidget.contentValue.equals("content1")) {
-                                noonWidget.CLICK_FLAG = false;
                                 Log.i("widget", "widget->main, " + noonWidget.contentValue);
                                 int tab_position = noonWidget.themaValue;
                                 mDrawerList.performItemClick(mDrawerList.getChildAt(1), 1, mDrawerList.getItemIdAtPosition(1));
                                 actionbar.setSelectedNavigationItem(tab_position);
-                            } else if(noonWidget.contentValue.equals("content2")) {
-                                noonWidget.CLICK_FLAG = false;
-                                Log.i("widget", "widget->main," + noonWidget.contentValue);
-                                mDrawerList.performItemClick(mDrawerList.getChildAt(0), 0, mDrawerList.getItemIdAtPosition(0));
                             }
                         }
                         break;
@@ -207,20 +203,7 @@ public class MainActivity extends FragmentActivity {
         };
         mHandler.sendEmptyMessage(ViewInt);
 
-        if(noonWidget.CLICK_FLAG == true) {
-            noonWidget.CLICK_FLAG = false;
-            if(noonWidget.contentValue.equals("content1")) {
-                Log.i("widget", "widget->main, " + noonWidget.contentValue);
-                int tab_position = noonWidget.themaValue;
-                mDrawerList.performItemClick(mDrawerList.getChildAt(0), 0, mDrawerList.getItemIdAtPosition(0));
-                //actionbar.getTabAt(tab_position).select();
-            }
-            if(noonWidget.contentValue.equals("content2")) {
-                Log.i("widget", "widget->main, " + noonWidget.contentValue);
-                mDrawerList.performItemClick(mDrawerList.getChildAt(0), 0, mDrawerList.getItemIdAtPosition(0));
-            }
 
-        }
     }
 
     @Override
