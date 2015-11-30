@@ -48,6 +48,30 @@ public class registerAlarm {
             e.printStackTrace();
         }
     }
+    public void testAM2(String index,int sec) {
+
+        try {
+            long atime = System.currentTimeMillis();
+
+            Calendar curTime = Calendar.getInstance();
+            curTime.set(Calendar.SECOND, curTime.get(Calendar.SECOND) + sec);
+            long btime = curTime.getTimeInMillis();
+            long triggerTime = btime;
+            if (atime > btime)
+                triggerTime += 1000 * 60 * 60 * 24;
+            Intent intentMyService;
+            intentMyService = new Intent(index);
+            AlarmManager am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+            PendingIntent sender = PendingIntent.getBroadcast(context, 1, intentMyService, 0);
+
+            // 서비스 시작
+            am.set(AlarmManager.RTC_WAKEUP, triggerTime, sender);
+        } catch (Exception e) {
+            Log.d("MpMainActivity", e.getMessage() + "");
+
+            e.printStackTrace();
+        }
+    }
     public void registerNews(int sec) {
         SharedInit SI = new SharedInit(context);
         try {
@@ -90,7 +114,7 @@ public class registerAlarm {
 
             LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.SECOND, cal.get(Calendar.SECOND) + 10);
+            cal.set(Calendar.SECOND, cal.get(Calendar.SECOND) + 5);
             long oneHour = 60 * 60 * 1000;
             Intent intentMyService;
             intentMyService = new Intent(idIndex);
@@ -116,7 +140,7 @@ public class registerAlarm {
 
             LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.SECOND, cal.get(Calendar.SECOND) + 15);
+            cal.set(Calendar.SECOND, cal.get(Calendar.SECOND) + 5);
             Intent intentMyService;
             intentMyService = new Intent(idIndex);
             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -134,14 +158,15 @@ public class registerAlarm {
             e.printStackTrace();
         }
     }
-    public void registerpatten(){
+    public void registerpattern(){
         try {
+            Log.i("ra pattern","ra pattern!!!!");
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.HOUR_OF_DAY, 23);
             cal.set(Calendar.MINUTE, 0);
             long oneDay = 60 * 60 * 1000 * 24;
             Intent intentMyService;
-            intentMyService = new Intent("ACTION.SET.PATTEN");
+            intentMyService = new Intent("ACTION.SET.PATTERN");
 
             AlarmManager am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
             PendingIntent sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
@@ -150,13 +175,14 @@ public class registerAlarm {
             am.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), oneDay, sender);
         } catch (Exception e) {
             Log.d("MpMainActivity", e.getMessage() + "");
-
+            Log.i("ra pattern","error");
             e.printStackTrace();
         }
     }
 
     public void registerplace(){
         try {
+            Log.i("ra place","ra place!!!!");
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.SECOND, cal.get(Calendar.SECOND) + 10);
             long halfMinute = 30 * 60 * 1000;
@@ -165,18 +191,16 @@ public class registerAlarm {
 
             AlarmManager am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
             PendingIntent sender = PendingIntent.getBroadcast(context, 0, intentMyService, 0);
-
             // 서비스 시작
             am.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), halfMinute, sender);
         } catch (Exception e) {
             Log.d("MpMainActivity", e.getMessage() + "");
-
             e.printStackTrace();
         }
     }
     public void registerOneWeek(){
         try {
-
+            Log.i("ra oneweek","ra OneWeek!!!");
             long atime = System.currentTimeMillis();
 
             Calendar cal = Calendar.getInstance();

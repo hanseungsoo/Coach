@@ -10,6 +10,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by han on 2015-11-24.
@@ -131,11 +133,12 @@ public class DBHandler {
     }
     public String selectfood(String local) throws SQLException {
         Cursor cursor= null;
-        ArrayList<Integer> weight = new ArrayList<>();
-        ArrayList<String> foodname = new ArrayList<>();
+        boolean flag = true;
+        ArrayList<weigt_foodname> foodname = new ArrayList<>();
+        foodname.clear();
         Log.i("aaaa","1"+staticMerge.food.size());
         String food = staticMerge.food.get(0);
-        Log.i("aaaa","2"+"select * from food_favorite where local_name = '" + local + "' and food = '" + food + "';");
+        Log.i("aaaa", "2" + "select * from food_favorite where local_name = '" + local + "' and food = '" + food + "';");
         for(int i=0; i<staticMerge.food.size();i++){
             food = staticMerge.food.get(i);
             cursor = db.rawQuery("select * from food_favorite where local_name = '" + local + "' and food = '" + food + "';", null);
@@ -146,31 +149,59 @@ public class DBHandler {
                 if(cursor.getCount() > 0 ){
                     cursor.moveToFirst();
                 }else{
-                    return "편의점";
+                    weigt_foodname temp = new weigt_foodname();
+                    temp.foodname = staticMerge.food.get(i);
+                    temp.weight = 0;
+                    foodname.add(temp);
+                    flag = false;
                 }
             }
-            Log.i("aaaa","3"+cursor.getCount());
-            Log.i("aaaa","4"+cursor.getPosition());
-            int temp = cursor.getColumnIndex("weight");
-            int temp2 = cursor.getColumnIndex("food");
-            Log.i("aaaa","5"+temp);
-            weight.add(i,cursor.getInt(temp));
-            foodname.add(i, cursor.getString(temp2));
-
-        }
-
-        int temp = weight.get(0);
-        int index = 0;
-        for(int i=1; i < weight.size();i++){
-            if(temp > weight.get(i)){
-
-            }else {
-                index = i;
-                temp = weight.get(i);
+            Log.i("aaaa", "3" + cursor.getCount());
+            Log.i("aaaa", "4" + cursor.getPosition());
+            if(flag){
+                int temp = cursor.getColumnIndex("weight");
+                int temp2 = cursor.getColumnIndex("food");
+                Log.i("aaaa", "5" + temp);
+                weigt_foodname tempN = new weigt_foodname();
+                tempN.foodname = cursor.getString(temp2);
+                tempN.weight = cursor.getInt(temp);
+                foodname.add(tempN);
+                flag=true;
             }
+
+
         }
 
-        return foodname.get(index);
+        Collections.sort(foodname, new Comparator<weigt_foodname>() {
+            @Override
+            public int compare(weigt_foodname lhs, weigt_foodname rhs) {
+                return (lhs.weight > rhs.weight)?-1:(lhs.weight < rhs.weight)?1:0;
+            }
+        });
+        switch (staticMerge.food.size()){
+            case 0:
+                staticMerge.finish_food[0] = "empty";
+                staticMerge.finish_food[1] = "empty";
+                staticMerge.finish_food[2] = "empty";
+                break;
+            case 1:
+                staticMerge.finish_food[0] = foodname.get(0).foodname;
+                staticMerge.finish_food[1] = "empty";
+                staticMerge.finish_food[2] = "empty";
+                break;
+            case 2:
+                staticMerge.finish_food[0] = foodname.get(0).foodname;
+                staticMerge.finish_food[1] = foodname.get(1).foodname;
+                staticMerge.finish_food[2] = "empty";
+                break;
+            default:
+                staticMerge.finish_food[0] = foodname.get(0).foodname;
+                staticMerge.finish_food[1] = foodname.get(1).foodname;
+                staticMerge.finish_food[2] = foodname.get(2).foodname;
+                break;
+        }
+
+        return null;
     }
 
     public void insert(String str) {

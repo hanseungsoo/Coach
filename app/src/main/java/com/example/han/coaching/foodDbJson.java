@@ -29,10 +29,7 @@ public class foodDbJson extends AsyncTask<String,Void,Void> {
     protected void onPostExecute(Void aVoid) {
 
         DBHandler dh = DBHandler.open(MainActivity.mContext);
-        staticMerge.finish_food[0] = dh.selectfood(staticMerge.dong);
-        if(staticMerge.finish_food[0].equals("")){
-            staticMerge.finish_food[0] = "편의점";
-        }
+        dh.selectfood(staticMerge.dong);
 
         try{
             LocationManager locationManager = (LocationManager) MainActivity.mContext.getSystemService(Context.LOCATION_SERVICE);
@@ -41,24 +38,53 @@ public class foodDbJson extends AsyncTask<String,Void,Void> {
             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
-            Log.i("aaaa","aaaaaaaaaaaaaaaaa"+staticMerge.finish_food[1]);
+            Log.i("aaaa","aaaaaaaaaaaaaaaaa"+staticMerge.finish_food[3]);
 
-            if(!(staticMerge.finish_food[1].equals("empty"))){
+
+            if(!(staticMerge.finish_food[3].equals("empty"))){
                 Searcher searcher1 = new Searcher();
-                searcher1.searchKeyword(MainActivity.mContext, staticMerge.finish_food[1], latitude, longitude, radius, page, 2, "9db6272582177f1d7b0643e35e1993e9", new OnFinishSearchListener() {
+                searcher1.searchKeyword(MainActivity.mContext, staticMerge.finish_food[3], latitude, longitude, radius, page, 2, "9db6272582177f1d7b0643e35e1993e9", new OnFinishSearchListener() {
                     @Override
                     public void onSuccess(List<Item> itemList) {
-                        if(itemList.size() == 0){
-                            Item item = new Item();
-                            item.title = "오늘은 기념일이 아니거나";
-                            item.category = " ";
-                            item.imageUrl = "http://222.116.135.76:8080/Noon/images/noon.png";
-                            item.address = "No Address";
-                            item.phone = "주변에 해당하는 음식점이 없습니다.";
-                            MainActivity.ThemaItem.set(0, item);
-                        }else{
+                        Item item = new Item();
+                        item.title = "오늘은 기념일이 아니거나";
+                        item.category = "";
+                        item.imageUrl = "http://222.116.135.76:8080/Noon/images/noon.png";
+                        item.address = "No Address";
+                        item.phone = "주변에 해당하는 음식점이 없습니다.";
+                        if (itemList.size() == 0) {
 
-                            MainActivity.ThemaItem.set(0, itemList.get(0));
+                            MainActivity.ThemaItem.set(0, item);
+                            MainActivity.ThemaItem.set(1, item);
+                            MainActivity.ThemaItem.set(2, item);
+                        } else {
+                            switch (itemList.size()) {
+
+                                case 2:
+                                    MainActivity.ThemaItem.set(0, itemList.get(0));
+                                    MainActivity.ThemaItem.set(1, itemList.get(1));
+                                    MainActivity.ThemaItem.set(2, item);
+                                    break;
+                                case 1:
+                                    MainActivity.ThemaItem.set(0, itemList.get(0));
+                                    MainActivity.ThemaItem.set(1, item);
+                                    MainActivity.ThemaItem.set(2, item);
+                                    break;
+                                default:
+
+
+
+
+
+
+
+
+                                    MainActivity.ThemaItem.set(0, itemList.get(0));
+                                    MainActivity.ThemaItem.set(1, itemList.get(1));
+                                    MainActivity.ThemaItem.set(2, itemList.get(2));
+                                    break;
+                            }
+
                         }
                     }
 
@@ -74,43 +100,148 @@ public class foodDbJson extends AsyncTask<String,Void,Void> {
                 item.address = "(X)address";
                 item.phone = "주변에 해당하는 음식점이 없습니다.";
                 MainActivity.ThemaItem.set(0, item);
+                MainActivity.ThemaItem.set(1, item);
+                MainActivity.ThemaItem.set(2, item);
             }
-            Log.i("aaaa","aaaaaaaaaaaaaaaaa2"+staticMerge.finish_food[0]);
-            Searcher searcher2 = new Searcher();
-            searcher2.searchKeyword(MainActivity.mContext, staticMerge.finish_food[0], latitude, longitude, radius, page, 2, "9db6272582177f1d7b0643e35e1993e9", new OnFinishSearchListener() {
-                @Override
-                public void onSuccess(List<Item> itemList) {
-                    if(itemList.size() == 0){
-                        Item item = new Item();
-                        item.title = "주변에";
-                        item.imageUrl = "http://222.116.135.76:8080/Noon/images/noon.png";
-                        item.category = "음식점이 없습니다.";
-                        item.address = "(X)address";
-                        item.phone = "추천할만한";
-                        MainActivity.ThemaItem.set(1, item);
-                    }else{
-                        MainActivity.ThemaItem.set(1, itemList.get(0));
-                    }
-                }
+            Log.i("aaaa", "aaaaaaaaaaaaaaaaa2" + staticMerge.finish_food[0]);
 
-                @Override
-                public void onFail() {
-                }
-            });
+            if(staticMerge.finish_food[0].equals("empty")){
+                Item item = new Item();
+                item.title = "주변에";
+                item.imageUrl = "http://222.116.135.76:8080/Noon/images/noon.png";
+                item.category = "음식점이 없습니다.";
+                item.address = "(X)address";
+                item.phone = "추천할만한";
+                MainActivity.ThemaItem.set(3, item);
+            }else{
+                Searcher searcher2 = new Searcher();
+                searcher2.searchKeyword(MainActivity.mContext, staticMerge.finish_food[0], latitude, longitude, radius, page, 2, "9db6272582177f1d7b0643e35e1993e9", new OnFinishSearchListener() {
+                    @Override
+                    public void onSuccess(List<Item> itemList) {
+
+                        if(itemList.size() == 0){
+                            Item item = new Item();
+                            item.title = "주변에";
+                            item.imageUrl = "http://222.116.135.76:8080/Noon/images/noon.png";
+                            item.category = "음식점이 없습니다.";
+                            item.address = "(X)address";
+                            item.phone = "추천할만한";
+                            MainActivity.ThemaItem.set(3, item);
+                        }else{
+
+                            MainActivity.ThemaItem.set(3, itemList.get(0));
+
+                        }
+                    }
+
+                    @Override
+                    public void onFail() {
+                    }
+                });
+            }
+
+            if(staticMerge.finish_food[1].equals("empty")){
+                Item item = new Item();
+                item.title = "주변에";
+                item.imageUrl = "http://222.116.135.76:8080/Noon/images/noon.png";
+                item.category = "음식점이 없습니다.";
+                item.address = "(X)address";
+                item.phone = "추천할만한";
+                MainActivity.ThemaItem.set(4, item);
+            }else{
+                Searcher searcher2 = new Searcher();
+                searcher2.searchKeyword(MainActivity.mContext, staticMerge.finish_food[1], latitude, longitude, radius, page, 2, "9db6272582177f1d7b0643e35e1993e9", new OnFinishSearchListener() {
+                    @Override
+                    public void onSuccess(List<Item> itemList) {
+
+                        if(itemList.size() == 0){
+                            Item item = new Item();
+                            item.title = "주변에";
+                            item.imageUrl = "http://222.116.135.76:8080/Noon/images/noon.png";
+                            item.category = "음식점이 없습니다.";
+                            item.address = "(X)address";
+                            item.phone = "추천할만한";
+                            MainActivity.ThemaItem.set(4, item);
+                        }else{
+
+                            MainActivity.ThemaItem.set(4, itemList.get(0));
+
+                        }
+                    }
+
+                    @Override
+                    public void onFail() {
+                    }
+                });
+            }
+            if(staticMerge.finish_food[2].equals("empty")){
+                Item item = new Item();
+                item.title = "주변에";
+                item.imageUrl = "http://222.116.135.76:8080/Noon/images/noon.png";
+                item.category = "음식점이 없습니다.";
+                item.address = "(X)address";
+                item.phone = "추천할만한";
+                MainActivity.ThemaItem.set(5, item);
+            }else{
+                Searcher searcher2 = new Searcher();
+                searcher2.searchKeyword(MainActivity.mContext, staticMerge.finish_food[2], latitude, longitude, radius, page, 2, "9db6272582177f1d7b0643e35e1993e9", new OnFinishSearchListener() {
+                    @Override
+                    public void onSuccess(List<Item> itemList) {
+
+                        if(itemList.size() == 0){
+                            Item item = new Item();
+                            item.title = "주변에";
+                            item.imageUrl = "http://222.116.135.76:8080/Noon/images/noon.png";
+                            item.category = "음식점이 없습니다.";
+                            item.address = "(X)address";
+                            item.phone = "추천할만한";
+                            MainActivity.ThemaItem.set(5, item);
+                        }else{
+
+                            MainActivity.ThemaItem.set(5, itemList.get(0));
+
+                        }
+                    }
+
+                    @Override
+                    public void onFail() {
+                    }
+                });
+            }
+
             Searcher searcher3 = new Searcher();
             searcher3.searchCategory(MainActivity.mContext, "FD6", latitude, longitude, radius, page, 2, "9db6272582177f1d7b0643e35e1993e9", new OnFinishSearchListener() {
                 @Override
                 public void onSuccess(List<Item> itemList) {
+                    Item item = new Item();
+                    item.title = "주변에";
+                    item.category = "음식점이 없습니다.";
+                    item.imageUrl = "http://222.116.135.76:8080/Noon/images/noon.png";
+                    item.address = "(X)address";
+                    item.phone = "추천할만한";
                     if(itemList.size() == 0){
-                        Item item = new Item();
-                        item.title = "주변에";
-                        item.category = "음식점이 없습니다.";
-                        item.imageUrl = "http://222.116.135.76:8080/Noon/images/noon.png";
-                        item.address = "(X)address";
-                        item.phone = "추천할만한";
-                        MainActivity.ThemaItem.set(2, item);
+
+                        MainActivity.ThemaItem.set(6, item);
+                        MainActivity.ThemaItem.set(7, item);
+                        MainActivity.ThemaItem.set(8, item);
                     }else{
-                        MainActivity.ThemaItem.set(2, itemList.get(0));
+                        switch (itemList.size()){
+                            case 2:
+                                MainActivity.ThemaItem.set(6, itemList.get(0));
+                                MainActivity.ThemaItem.set(7, itemList.get(1));
+                                MainActivity.ThemaItem.set(8, item);
+                                break;
+                            case 1:
+                                MainActivity.ThemaItem.set(6, itemList.get(0));
+                                MainActivity.ThemaItem.set(7, item);
+                                MainActivity.ThemaItem.set(8, item);
+                                break;
+                            default:
+                                MainActivity.ThemaItem.set(6, itemList.get(0));
+                                MainActivity.ThemaItem.set(7, itemList.get(1));
+                                MainActivity.ThemaItem.set(8, itemList.get(2));
+                                break;
+                        }
                     }
                 }
 
@@ -122,36 +253,55 @@ public class foodDbJson extends AsyncTask<String,Void,Void> {
             searcher4.searchCategory(MainActivity.mContext, "FD6", latitude, longitude, radius, 1, (int) (Math.random() * 3), "9db6272582177f1d7b0643e35e1993e9", new OnFinishSearchListener() {
                 @Override
                 public void onSuccess(List<Item> itemList) {
-
+                    Item item = new Item();
+                    item.title = "주변에";
+                    item.category = "음식점이 없습니다.";
+                    item.address = "(X)address";
+                    item.imageUrl = "http://222.116.135.76:8080/Noon/images/noon.png";
+                    item.phone = "추천할만한";
                     if (itemList.size() == 0) {
-                        Item item = new Item();
-                        item.title = "주변에";
-                        item.category = "음식점이 없습니다.";
-                        item.address = "(X)address";
-                        item.imageUrl = "http://222.116.135.76:8080/Noon/images/noon.png";
-                        item.phone = "추천할만한";
-                        MainActivity.ThemaItem.set(3, item);
+
+                        MainActivity.ThemaItem.set(9, item);
+                        MainActivity.ThemaItem.set(10, item);
+                        MainActivity.ThemaItem.set(11, item);
                         SaveData svData = new SaveData(MainActivity.mContext);
                         svData.save("SharedFood");
                         MainActivity.ViewInt = 1;
                         staticMerge.timer = true;
                         /*MainActivity.mHandler.sendEmptyMessage(1);*/
                         registerAlarm rA = new registerAlarm(MainActivity.mContext);
-                        rA.registerNews(60*60);
+                        rA.registerNews(60 * 60);
 
 
                     } else {
-                        MainActivity.ThemaItem.set(3, itemList.get((int) (Math.random() * 15)));
+
+                        switch (itemList.size()) {
+                            case 2:
+                                MainActivity.ThemaItem.set(9, itemList.get((int) (Math.random() * 15)));
+                                MainActivity.ThemaItem.set(10, itemList.get((int) (Math.random() * 15)));
+                                MainActivity.ThemaItem.set(11, item);
+                                break;
+                            case 1:
+                                MainActivity.ThemaItem.set(9, itemList.get((int) (Math.random() * 15)));
+                                MainActivity.ThemaItem.set(10, item);
+                                MainActivity.ThemaItem.set(11, item);
+                                break;
+                            default:
+                                MainActivity.ThemaItem.set(9, itemList.get((int) (Math.random() * 15)));
+                                MainActivity.ThemaItem.set(10, itemList.get((int) (Math.random() * 15)));
+                                MainActivity.ThemaItem.set(11, itemList.get((int) (Math.random() * 15)));
+                                break;
+                        }
                         SaveData svData = new SaveData(MainActivity.mContext);
                         svData.save("SharedFood");
 
                         MainActivity.ViewInt = 1;
-                        noonWidget.contentValue="content1";
+                        noonWidget.contentValue = "content1";
                         MainActivity.mmmm();
                         staticMerge.timer = true;
                         /*MainActivity.mHandler.sendEmptyMessage(1);*/
                         registerAlarm rA = new registerAlarm(MainActivity.mContext);
-                        rA.registerNews(60*60);
+                        rA.registerNews(60 * 60);
 
                     }
 
@@ -338,15 +488,15 @@ public class foodDbJson extends AsyncTask<String,Void,Void> {
                 }
                 if(food_nameAnniv.equals("empty")){
 
-                    staticMerge.finish_food[1]="empty";
+                    staticMerge.finish_food[3]="empty";
                 }else{
-                    staticMerge.finish_food[1]=food_nameAnniv;
+                    staticMerge.finish_food[3]=food_nameAnniv;
                 }
             }else{
-                staticMerge.finish_food[1]=food_nameAnniv;
+                staticMerge.finish_food[3]=food_nameAnniv;
             }
         }else{
-            staticMerge.finish_food[1] = Annis.get(0).getSubject();
+            staticMerge.finish_food[3] = Annis.get(0).getSubject();
         }
 
 

@@ -17,7 +17,7 @@ public class settingBroadcast extends BroadcastReceiver {
             dbHandler.close();
 
         }
-        if(intent.getAction().equals("ACTION.SET.PATTEN")){
+        if(intent.getAction().equals("ACTION.SET.PATTERN")){
             // 1일
             DBHandler dbHandler = DBHandler.open(MainActivity.mContext);
             dbHandler.food_pattern_insert();

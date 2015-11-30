@@ -28,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +58,7 @@ public class MainActivity extends FragmentActivity {
     TextView cateTv = null;
     TextView addrTv = null;
     ImageView foodImg = null;
+    Spinner SP2 =null;
     ViewGroup mapViewContainer = null;
     static Handler mHandler;
     static int ViewInt = 1;
@@ -83,13 +85,10 @@ public class MainActivity extends FragmentActivity {
             SI.Init();
             rA.registerInit();
             rA.registerWT("Weather.a");
-            /*rA.registerpatten();
-            rA.registerplace();
-            rA.registerOneWeek();*/
             rA.registerDong("Detailaddr");
-            rA.registerNews(20);
+            rA.registerNews(10);
         }
-        rA.testAM("ACTION.GET.ONE",21,45);
+       // rA.testAM("ACTION.GET.ONE",21,45);
 
         //諛붿씤�뵫
         actionbar = getActionBar();
@@ -171,12 +170,20 @@ public class MainActivity extends FragmentActivity {
                         break;
                     case 1:
                         setContentView(R.layout.activity_main);
-                        setDrawer(ActionBar.NAVIGATION_MODE_TABS);
                         nameTv = (TextView)findViewById(R.id.nameView);
                         telTv = (TextView)findViewById(R.id.telView);
                         cateTv = (TextView)findViewById(R.id.cateView);
                         addrTv = (TextView)findViewById(R.id.addrView);
                         foodImg = (ImageView)findViewById(R.id.cookImage);
+                        SP2 = (Spinner)findViewById(R.id.spinner2);
+                        final ArrayList<String> arraylist2 = new ArrayList<String>();
+                        arraylist2.add("추천1");
+                        arraylist2.add("추천2");
+                        arraylist2.add("추천3");
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.mContext,
+                                android.R.layout.simple_spinner_dropdown_item, arraylist2);
+                        SP2.setAdapter(adapter);
+
                         mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
                         mapViewContainer.removeAllViews();
                         mapView = null;
@@ -257,6 +264,16 @@ public class MainActivity extends FragmentActivity {
                 cateTv = (TextView)findViewById(R.id.cateView);
                 addrTv = (TextView)findViewById(R.id.addrView);
                 foodImg = (ImageView)findViewById(R.id.cookImage);
+                SP2 = (Spinner)findViewById(R.id.spinner2);
+                SP2 = (Spinner)findViewById(R.id.spinner2);
+                final ArrayList<String> arraylist2 = new ArrayList<String>();
+                arraylist2.add("추천1");
+                arraylist2.add("추천2");
+                arraylist2.add("추천3");
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.mContext,
+                        android.R.layout.simple_spinner_dropdown_item, arraylist2);
+                SP2.setAdapter(adapter);
+
                 mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
                 mapViewContainer.removeAllViews();
                 mapView = null;
@@ -329,7 +346,7 @@ public class MainActivity extends FragmentActivity {
 
     public void make_dummy() {
 
-        for (int i=1; i<5;i++) {
+        for (int i=1; i<13;i++) {
             Item item = new Item();
             item.title = "(X)title"+i;
             item.category = "(X)category"+i;
@@ -391,114 +408,502 @@ public class MainActivity extends FragmentActivity {
     public class TabListen implements ActionBar.TabListener{
         @Override
         public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-            MapPOIItem marker;
-            Item in1;
             int position = tab.getPosition();
             int size = MainActivity.ThemaItem.size();
             switch (position) {
                 case 0:
-                    if(size>=1) {
+                    if(size>=0) {
                         mapView.removeAllPOIItems();
+                        Item in1 = MainActivity.ThemaItem.get(0);
+                        MapPOIItem marker = new MapPOIItem();
+                        nameTv.setText("" + in1.title);
+                        telTv.setText("" + in1.phone);
+                        cateTv.setText("" + in1.category);
+                        addrTv.setText("" + in1.address);
+                        if(in1.imageUrl.equals("")){
+                            in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
+                            new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                        }else{
+                            new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                        }
+                        marker.setItemName("Default Marker");
+                        marker.setTag(0);
+                        marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
+                        marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
+                        mapView.addPOIItem(marker);
                         Toast.makeText(getApplicationContext(), "" + size, Toast.LENGTH_SHORT).show();
-                        marker = new MapPOIItem();
                         if(MainActivity.ThemaItem.size()>0){
-                            in1 = MainActivity.ThemaItem.get(0);
-                            nameTv.setText("" + in1.title);
-                            telTv.setText("" + in1.phone);
-                            cateTv.setText("" + in1.category);
-                            addrTv.setText("" + in1.address);
-                            if(in1.imageUrl.equals("")){
-                                in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
-                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
-                            }else{
-                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
-                            }
-                            marker.setItemName("Default Marker");
-                            marker.setTag(0);
-                            marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
-                            marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
-                            mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
-                            mapView.addPOIItem(marker);
+                            SP2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    MapPOIItem marker;
+                                    Item in1;
+                                    switch (position){
+                                        case 0:
+                                            in1 = MainActivity.ThemaItem.get(0);
+                                            marker = new MapPOIItem();
+                                            nameTv.setText("" + in1.title);
+                                            telTv.setText("" + in1.phone);
+                                            cateTv.setText("" + in1.category);
+                                            addrTv.setText("" + in1.address);
+                                            if(in1.imageUrl.equals("")){
+                                                in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
+                                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                            }else{
+                                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                            }
+                                            marker.setItemName("Default Marker");
+                                            marker.setTag(0);
+                                            marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
+                                            marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                                            mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
+                                            mapView.addPOIItem(marker);
+
+                                            break;
+                                        case 1:
+                                            in1 = MainActivity.ThemaItem.get(1);
+
+                                            marker = new MapPOIItem();
+                                            nameTv.setText("" + in1.title);
+                                            telTv.setText("" + in1.phone);
+                                            cateTv.setText("" + in1.category);
+                                            addrTv.setText("" + in1.address);
+                                            if(in1.imageUrl.equals("")){
+                                                in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
+                                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                            }else{
+                                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                            }
+                                            marker.setItemName("Default Marker");
+                                            marker.setTag(0);
+                                            marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
+                                            marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                                            mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
+                                            mapView.addPOIItem(marker);
+
+                                            break;
+                                        case 2:
+                                            in1 = MainActivity.ThemaItem.get(2);
+                                            marker = new MapPOIItem();
+                                            nameTv.setText("" + in1.title);
+                                            telTv.setText("" + in1.phone);
+                                            cateTv.setText("" + in1.category);
+                                            addrTv.setText("" + in1.address);
+                                            if(in1.imageUrl.equals("")){
+                                                in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
+                                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                            }else{
+                                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                            }
+                                            marker.setItemName("Default Marker");
+                                            marker.setTag(0);
+                                            marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
+                                            marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                                            mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
+                                            mapView.addPOIItem(marker);
+
+                                            break;
+
+                                    }
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
+                                    Item in1 = MainActivity.ThemaItem.get(0);
+                                    MapPOIItem marker = new MapPOIItem();
+                                    nameTv.setText("" + in1.title);
+                                    telTv.setText("" + in1.phone);
+                                    cateTv.setText("" + in1.category);
+                                    addrTv.setText("" + in1.address);
+                                    if(in1.imageUrl.equals("")){
+                                        in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
+                                        new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                    }else{
+                                        new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                    }
+                                    marker.setItemName("Default Marker");
+                                    marker.setTag(0);
+                                    marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
+                                    marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                                    mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
+                                    mapView.addPOIItem(marker);
+                                }
+                            });
                         }
                     }
+
+
+                    SP2.setSelection(0, true);
                     break;
                 case 1:
-                    if(size >=2) {
+                    if(size>=3) {
                         mapView.removeAllPOIItems();
+                        Item in1 = MainActivity.ThemaItem.get(3);
+                        MapPOIItem marker = new MapPOIItem();
+                        nameTv.setText("" + in1.title);
+                        telTv.setText("" + in1.phone);
+                        cateTv.setText("" + in1.category);
+                        addrTv.setText("" + in1.address);
+                        if(in1.imageUrl.equals("")){
+                            in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
+                            new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                        }else{
+                            new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                        }
+                        marker.setItemName("Default Marker");
+                        marker.setTag(0);
+                        marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
+                        marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
+                        mapView.addPOIItem(marker);
                         Toast.makeText(getApplicationContext(), "" + size, Toast.LENGTH_SHORT).show();
-                        marker = new MapPOIItem();
                         if(MainActivity.ThemaItem.size()>0){
-                            in1 = MainActivity.ThemaItem.get(1);
-                            nameTv.setText("" + in1.title);
-                            telTv.setText("" + in1.phone);
-                            cateTv.setText("" + in1.category);
-                            addrTv.setText("" + in1.address);
-                            if(in1.imageUrl.equals("")){
-                                in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
-                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
-                            }else{
-                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
-                            }
-                            marker.setItemName("Default Marker");
-                            marker.setTag(0);
-                            marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
-                            marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
-                            mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
-                            mapView.addPOIItem(marker);
+                            SP2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    MapPOIItem marker;
+                                    Item in1;
+                                    switch (position){
+                                        case 0:
+                                            in1 = MainActivity.ThemaItem.get(3);
+                                            marker = new MapPOIItem();
+                                            nameTv.setText("" + in1.title);
+                                            telTv.setText("" + in1.phone);
+                                            cateTv.setText("" + in1.category);
+                                            addrTv.setText("" + in1.address);
+                                            if(in1.imageUrl.equals("")){
+                                                in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
+                                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                            }else{
+                                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                            }
+                                            marker.setItemName("Default Marker");
+                                            marker.setTag(0);
+                                            marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
+                                            marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                                            mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
+                                            mapView.addPOIItem(marker);
+
+                                            break;
+                                        case 1:
+                                            in1 = MainActivity.ThemaItem.get(4);
+
+                                            marker = new MapPOIItem();
+                                            nameTv.setText("" + in1.title);
+                                            telTv.setText("" + in1.phone);
+                                            cateTv.setText("" + in1.category);
+                                            addrTv.setText("" + in1.address);
+                                            if(in1.imageUrl.equals("")){
+                                                in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
+                                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                            }else{
+                                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                            }
+                                            marker.setItemName("Default Marker");
+                                            marker.setTag(0);
+                                            marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
+                                            marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                                            mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
+                                            mapView.addPOIItem(marker);
+
+                                            break;
+                                        case 2:
+                                            in1 = MainActivity.ThemaItem.get(5);
+                                            marker = new MapPOIItem();
+                                            nameTv.setText("" + in1.title);
+                                            telTv.setText("" + in1.phone);
+                                            cateTv.setText("" + in1.category);
+                                            addrTv.setText("" + in1.address);
+                                            if(in1.imageUrl.equals("")){
+                                                in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
+                                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                            }else{
+                                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                            }
+                                            marker.setItemName("Default Marker");
+                                            marker.setTag(0);
+                                            marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
+                                            marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                                            mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
+                                            mapView.addPOIItem(marker);
+
+                                            break;
+
+                                    }
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
+                                    Item in1 = MainActivity.ThemaItem.get(3);
+                                    MapPOIItem marker = new MapPOIItem();
+                                    nameTv.setText("" + in1.title);
+                                    telTv.setText("" + in1.phone);
+                                    cateTv.setText("" + in1.category);
+                                    addrTv.setText("" + in1.address);
+                                    if(in1.imageUrl.equals("")){
+                                        in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
+                                        new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                    }else{
+                                        new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                    }
+                                    marker.setItemName("Default Marker");
+                                    marker.setTag(0);
+                                    marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
+                                    marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                                    mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
+                                    mapView.addPOIItem(marker);
+                                }
+                            });
                         }
                     }
+                    SP2.setSelection(0);
                     break;
                 case 2:
-                    if(size >=3) {
+                    if(size>=6) {
                         mapView.removeAllPOIItems();
+                        Item in1 = MainActivity.ThemaItem.get(6);
+                        MapPOIItem marker = new MapPOIItem();
+                        nameTv.setText("" + in1.title);
+                        telTv.setText("" + in1.phone);
+                        cateTv.setText("" + in1.category);
+                        addrTv.setText("" + in1.address);
+                        if(in1.imageUrl.equals("")){
+                            in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
+                            new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                        }else{
+                            new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                        }
+                        marker.setItemName("Default Marker");
+                        marker.setTag(0);
+                        marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
+                        marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
+                        mapView.addPOIItem(marker);
                         Toast.makeText(getApplicationContext(), "" + size, Toast.LENGTH_SHORT).show();
-                        marker = new MapPOIItem();
                         if(MainActivity.ThemaItem.size()>0){
-                            in1 = MainActivity.ThemaItem.get(2);
-                            nameTv.setText("" + in1.title);
-                            telTv.setText("" + in1.phone);
-                            cateTv.setText("" + in1.category);
-                            addrTv.setText("" + in1.address);
-                            if(in1.imageUrl.equals("")){
-                                in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
-                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
-                            }else{
-                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
-                            }
-                            marker.setItemName("Default Marker");
-                            marker.setTag(0);
-                            marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
-                            marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
-                            mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
-                            mapView.addPOIItem(marker);
+                            SP2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    MapPOIItem marker;
+                                    Item in1;
+                                    switch (position){
+                                        case 0:
+                                            in1 = MainActivity.ThemaItem.get(6);
+                                            marker = new MapPOIItem();
+                                            nameTv.setText("" + in1.title);
+                                            telTv.setText("" + in1.phone);
+                                            cateTv.setText("" + in1.category);
+                                            addrTv.setText("" + in1.address);
+                                            if(in1.imageUrl.equals("")){
+                                                in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
+                                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                            }else{
+                                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                            }
+                                            marker.setItemName("Default Marker");
+                                            marker.setTag(0);
+                                            marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
+                                            marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                                            mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
+                                            mapView.addPOIItem(marker);
+
+                                            break;
+                                        case 1:
+                                            in1 = MainActivity.ThemaItem.get(7);
+
+                                            marker = new MapPOIItem();
+                                            nameTv.setText("" + in1.title);
+                                            telTv.setText("" + in1.phone);
+                                            cateTv.setText("" + in1.category);
+                                            addrTv.setText("" + in1.address);
+                                            if(in1.imageUrl.equals("")){
+                                                in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
+                                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                            }else{
+                                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                            }
+                                            marker.setItemName("Default Marker");
+                                            marker.setTag(0);
+                                            marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
+                                            marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                                            mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
+                                            mapView.addPOIItem(marker);
+
+                                            break;
+                                        case 2:
+                                            in1 = MainActivity.ThemaItem.get(8);
+                                            marker = new MapPOIItem();
+                                            nameTv.setText("" + in1.title);
+                                            telTv.setText("" + in1.phone);
+                                            cateTv.setText("" + in1.category);
+                                            addrTv.setText("" + in1.address);
+                                            if(in1.imageUrl.equals("")){
+                                                in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
+                                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                            }else{
+                                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                            }
+                                            marker.setItemName("Default Marker");
+                                            marker.setTag(0);
+                                            marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
+                                            marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                                            mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
+                                            mapView.addPOIItem(marker);
+
+                                            break;
+
+                                    }
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
+                                    Item in1 = MainActivity.ThemaItem.get(6);
+                                    MapPOIItem marker = new MapPOIItem();
+                                    nameTv.setText("" + in1.title);
+                                    telTv.setText("" + in1.phone);
+                                    cateTv.setText("" + in1.category);
+                                    addrTv.setText("" + in1.address);
+                                    if(in1.imageUrl.equals("")){
+                                        in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
+                                        new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                    }else{
+                                        new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                    }
+                                    marker.setItemName("Default Marker");
+                                    marker.setTag(0);
+                                    marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
+                                    marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                                    mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
+                                    mapView.addPOIItem(marker);
+                                }
+                            });
                         }
                     }
+                    SP2.setSelection(0);
                     break;
                 case 3:
-                    if(size >=4) {
+                    if(size>=9) {
                         mapView.removeAllPOIItems();
+                        Item in1 = MainActivity.ThemaItem.get(9);
+                        MapPOIItem marker = new MapPOIItem();
+                        nameTv.setText("" + in1.title);
+                        telTv.setText("" + in1.phone);
+                        cateTv.setText("" + in1.category);
+                        addrTv.setText("" + in1.address);
+                        if(in1.imageUrl.equals("")){
+                            in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
+                            new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                        }else{
+                            new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                        }
+                        marker.setItemName("Default Marker");
+                        marker.setTag(0);
+                        marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
+                        marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
+                        mapView.addPOIItem(marker);
                         Toast.makeText(getApplicationContext(), "" + size, Toast.LENGTH_SHORT).show();
-                        marker = new MapPOIItem();
                         if(MainActivity.ThemaItem.size()>0){
-                            in1 = MainActivity.ThemaItem.get(3);
-                            nameTv.setText("" + in1.title);
-                            telTv.setText("" + in1.phone);
-                            cateTv.setText("" + in1.category);
-                            addrTv.setText("" + in1.address);
-                            if(in1.imageUrl.equals("")){
-                                in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
-                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
-                            }else{
-                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
-                            }
-                            marker.setItemName("Default Marker");
-                            marker.setTag(0);
-                            marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
-                            marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
-                            mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
-                            mapView.addPOIItem(marker);
+                            SP2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    MapPOIItem marker;
+                                    Item in1;
+                                    switch (position){
+                                        case 0:
+                                            in1 = MainActivity.ThemaItem.get(9);
+                                            marker = new MapPOIItem();
+                                            nameTv.setText("" + in1.title);
+                                            telTv.setText("" + in1.phone);
+                                            cateTv.setText("" + in1.category);
+                                            addrTv.setText("" + in1.address);
+                                            if(in1.imageUrl.equals("")){
+                                                in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
+                                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                            }else{
+                                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                            }
+                                            marker.setItemName("Default Marker");
+                                            marker.setTag(0);
+                                            marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
+                                            marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                                            mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
+                                            mapView.addPOIItem(marker);
+
+                                            break;
+                                        case 1:
+                                            in1 = MainActivity.ThemaItem.get(10);
+
+                                            marker = new MapPOIItem();
+                                            nameTv.setText("" + in1.title);
+                                            telTv.setText("" + in1.phone);
+                                            cateTv.setText("" + in1.category);
+                                            addrTv.setText("" + in1.address);
+                                            if(in1.imageUrl.equals("")){
+                                                in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
+                                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                            }else{
+                                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                            }
+                                            marker.setItemName("Default Marker");
+                                            marker.setTag(0);
+                                            marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
+                                            marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                                            mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
+                                            mapView.addPOIItem(marker);
+
+                                            break;
+                                        case 2:
+                                            in1 = MainActivity.ThemaItem.get(11);
+                                            marker = new MapPOIItem();
+                                            nameTv.setText("" + in1.title);
+                                            telTv.setText("" + in1.phone);
+                                            cateTv.setText("" + in1.category);
+                                            addrTv.setText("" + in1.address);
+                                            if(in1.imageUrl.equals("")){
+                                                in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
+                                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                            }else{
+                                                new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                            }
+                                            marker.setItemName("Default Marker");
+                                            marker.setTag(0);
+                                            marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
+                                            marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                                            mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
+                                            mapView.addPOIItem(marker);
+
+                                            break;
+
+                                    }
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
+                                    Item in1 = MainActivity.ThemaItem.get(9);
+                                    MapPOIItem marker = new MapPOIItem();
+                                    nameTv.setText("" + in1.title);
+                                    telTv.setText("" + in1.phone);
+                                    cateTv.setText("" + in1.category);
+                                    addrTv.setText("" + in1.address);
+                                    if(in1.imageUrl.equals("")){
+                                        in1.imageUrl ="http://222.116.135.76:8080/Noon/images/noon.png";
+                                        new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                    }else{
+                                        new DownloadImageTask(foodImg).execute(in1.imageUrl);
+                                    }
+                                    marker.setItemName("Default Marker");
+                                    marker.setTag(0);
+                                    marker.setMapPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude));
+                                    marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+                                    mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(in1.latitude, in1.longitude), true);
+                                    mapView.addPOIItem(marker);
+                                }
+                            });
                         }
                     }
+                    SP2.setSelection(0);
                     break;
             }
         }

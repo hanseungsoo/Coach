@@ -9,7 +9,7 @@ public class staticMerge {
     static String temp="clear";
     static String what="nothing";
     static String dong = "";
-    static String[] finish_food = new String[2];
+    static String[] finish_food = new String[4];
     static ArrayList<String> food = new ArrayList<>();
     static boolean timer = false;
 

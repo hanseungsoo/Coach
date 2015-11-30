@@ -65,11 +65,15 @@
             android:id="@+id/checkBox6"
             android:layout_gravity="center_vertical" />
     </LinearLayout>
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="프로파일링 시작"
+        android:onClick="onProClicked"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="STOP service"
         android:id="@+id/stopservice"
         android:layout_gravity="center_horizontal" />
     <Button

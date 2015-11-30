@@ -63,7 +63,7 @@
         </receiver>
         <receiver android:name=".settingBroadcast">
             <intent-filter>
-                <action android:name="ACTION.SET.PATTEN"/>
+                <action android:name="ACTION.SET.PATTERN"/>
                 <action android:name="ACTION.SET.PLACE"/>
                 <action android:name="ACTION.SET.ONEWEEK"/>
                 <action android:name="ACTION.SET.NEWS"/>
