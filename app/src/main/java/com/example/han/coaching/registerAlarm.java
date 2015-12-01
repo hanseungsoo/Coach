@@ -183,7 +183,7 @@ public class registerAlarm {
     public void registerplace(){
         try {
             Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.SECOND, cal.get(Calendar.SECOND) + 10);
+            cal.set(Calendar.SECOND, cal.get(Calendar.SECOND) + 60);
             long halfMinute = 30 * 60 * 1000;
             Intent intentMyService;
             intentMyService = new Intent("ACTION.SET.PLACE");

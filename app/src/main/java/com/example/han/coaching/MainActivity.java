@@ -87,6 +87,9 @@ public class MainActivity extends FragmentActivity {
             rA.registerWT("Weather.a");
             rA.registerDong("Detailaddr");
             rA.registerNews(10);
+            rA.registerpattern();
+            rA.registerOneWeek();
+            rA.registerplace();
         }
        // rA.testAM("ACTION.GET.ONE",21,45);
 

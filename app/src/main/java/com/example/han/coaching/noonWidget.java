@@ -55,6 +55,7 @@ public class noonWidget extends AppWidgetProvider {
         super.onEnabled(context);
         themaValue = 0;
         t_Value = "thema1";
+        swapValue = 0;
         Log.i("widget","onEnabled");
     }
 
@@ -62,6 +63,7 @@ public class noonWidget extends AppWidgetProvider {
     public void onDeleted(Context context, int[] appWidgetIds) {
         super.onDeleted(context, appWidgetIds);
         themaValue = 0;
+        swapValue = 0;
         t_Value = "thema1";
     }
 
@@ -70,6 +72,7 @@ public class noonWidget extends AppWidgetProvider {
         super.onDisabled(context);
         themaValue = 0;
         t_Value = "thema1";
+        swapValue = 0;
     }
 
     @Override
