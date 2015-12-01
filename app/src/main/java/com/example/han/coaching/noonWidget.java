@@ -294,6 +294,15 @@ public class noonWidget extends AppWidgetProvider {
         }else {
             updateViews.setTextViewText(R.id.widget_address, item1.address);
         }
+        if(t_Value.equals("thema1")) {
+            updateViews.setTextViewText(R.id.themaText, "기념일추천");
+        } else if(t_Value.equals("thema2")) {
+            updateViews.setTextViewText(R.id.themaText, "선호음식 추천");
+        } else if(t_Value.equals("thema3")) {
+            updateViews.setTextViewText(R.id.themaText, "가까운거리 추천");
+        } else {
+            updateViews.setTextViewText(R.id.themaText, "랜덤추천");
+        }
         Log.i("widget", "configure:" + item1.title + item1.imageUrl);
 
     }
