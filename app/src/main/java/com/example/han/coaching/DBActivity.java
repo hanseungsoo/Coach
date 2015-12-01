@@ -25,6 +25,7 @@ public class DBActivity extends Activity {
     @Override
     protected void onStart() {
         dbHandler = DBHandler.open(MainActivity.mContext);
+        dbHandler.dummy_insert();
         super.onStart();
     }
     @Override
@@ -49,12 +50,12 @@ public class DBActivity extends Activity {
         }
         tv.setText(str);
     }
-/*
-    public void Button22CLick(View v) {
+
+    public void abodeCleanCLicked(View v) {
         //음식패턴 정리
-        dbHandler.food_pattern_clean2();
+        dbHandler.abode_clean();
     }
-    */
+
     public void abodeViewClicked(View v) {
         //거주지 보기
         Cursor cursor = dbHandler.select_abode();

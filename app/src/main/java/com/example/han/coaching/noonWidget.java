@@ -62,12 +62,14 @@ public class noonWidget extends AppWidgetProvider {
     public void onDeleted(Context context, int[] appWidgetIds) {
         super.onDeleted(context, appWidgetIds);
         themaValue = 0;
+        t_Value = "thema1";
     }
 
     @Override
     public void onDisabled(Context context) {
         super.onDisabled(context);
         themaValue = 0;
+        t_Value = "thema1";
     }
 
     @Override

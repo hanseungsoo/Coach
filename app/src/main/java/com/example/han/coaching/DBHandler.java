@@ -282,14 +282,14 @@ public class DBHandler {
         }
     }
     public void abode_insert() {
-        if(!MainActivity.ThemaItem.get(9).phone.equals("010-2043-5392")) {
             try {
-                db.execSQL("INSERT INTO abode VALUES (null, '" + staticMerge.dong + "', '" + staticMerge.bunji + "', 1, 0);");
+                if(!(staticMerge.dong.equals("") || staticMerge.bunji.equals(""))) {
+                    db.execSQL("INSERT INTO abode VALUES (null, '" + staticMerge.dong + "', '" + staticMerge.bunji + "', 1, 0);");
+                }
                 Log.i("db","abode_insert Successe");
             }catch (Exception e) {
                 Log.i("db","abode_insert Failed");
             }
-        }
     }
     public void abode_clean() {
         //거주지 하루에 한 번 클린해주는 메서드
