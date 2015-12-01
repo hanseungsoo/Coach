@@ -77,19 +77,22 @@ public class DBHandler {
         int col2 = cursor.getColumnIndex("subject");
         int col3 = cursor.getColumnIndex("year");
         int col4 = cursor.getColumnIndex("month");
-        int col5 = cursor.getColumnIndex("cate");
+        int col5 = cursor.getColumnIndex("day");
+        int col6 = cursor.getColumnIndex("cate");
         while(cursor.moveToNext()){
             Anni item = new Anni();
             item.setSeq(cursor.getInt(col1));
             item.setSubject(cursor.getString(col2));
             item.setYear(cursor.getInt(col3));
             item.setMonth(cursor.getInt(col4));
-            item.setCate(cursor.getString(col5));
+            item.setDay(cursor.getInt(col5));
+            item.setCate(cursor.getString(col6));
             Annis.add(item);
         }
         return Annis;
 
     }
+
 
 
 
@@ -118,14 +121,16 @@ public class DBHandler {
         int col2 = cursor.getColumnIndex("subject");
         int col3 = cursor.getColumnIndex("year");
         int col4 = cursor.getColumnIndex("month");
-        int col5 = cursor.getColumnIndex("cate");
+        int col5 = cursor.getColumnIndex("day");
+        int col6 = cursor.getColumnIndex("cate");
         while(cursor.moveToNext()){
             Anni item = new Anni();
             item.setSeq(cursor.getInt(col1));
             item.setSubject(cursor.getString(col2));
             item.setYear(cursor.getInt(col3));
             item.setMonth(cursor.getInt(col4));
-            item.setCate(cursor.getString(col5));
+            item.setDay(cursor.getInt(col5));
+            item.setCate(cursor.getString(col6));
             Annis.add(item);
         }
         return Annis;
@@ -204,14 +209,6 @@ public class DBHandler {
         return null;
     }
 
-    public void insert(String str) {
-        try {
-            db.execSQL(str);
-            Log.i("db", "db insert succeessed");
-        }catch(Exception e ) {
-            Log.i("db", "db insert Failed.");
-        }
-    }
     public void food_favorite_insert() {
         String local = item.address;
         String lc[] = local.split(" ");
@@ -222,10 +219,27 @@ public class DBHandler {
 
         try {
             db.execSQL("INSERT INTO food_favorite VALUES (null, '" + lc[2] + "','" + item.title + "','" + staticMerge.temp + "','" + staticMerge.what + "',1,'" + today + "');");
-            Log.i("db", "db insert succeessed");
+            Log.i("db", "food_favorite insert succeessed");
         }catch(Exception e) {
             Log.i("db", "widget_insert Failed.");
         }
+    }
+
+    public Cursor food_favorite_select() {
+        Cursor cursor = null;
+        // cursor = db.rawQuery("select * from food_favorite where local_name = ? AND local_name = ?", new String[] {"David","2"});
+        cursor = db.rawQuery("SELECT * FROM food_favorite;",null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        if(cursor.getCount() >0) {
+            cursor.moveToFirst();
+            return cursor;
+        }
+
+        return null;
     }
 
     public void food_pattern_insert() {
@@ -237,44 +251,6 @@ public class DBHandler {
         }
     }
 
-    public void food_pattern_clean1() {
-        // 패턴 일주일에 한번씩 정리해주는 메서드
-
-        Cursor cursor= null;
-        String clean_sql1 = "SELECT SUM(a),SUM(b),SUM(c),SUM(d),SUM(e),SUM(f),SUM(g) FROM food_pattern;";
-        //String clean_sql1 = "REPLACE INTO food_pattern (a, b) SELECT SUM(a), SUM(b) FROM food_pattern";
-        String clean_sql2 = "DELETE FROM food_pattern;";
-        String clean_sql3 = "DELETE FROM SQLITE_SEQUENCE WHERE NAME = 'food_pattern';";
-
-
-        cursor = db.rawQuery(clean_sql1, null);
-        if(cursor.getCount() >0) {
-            cursor.moveToFirst();
-            int maxP = 0;
-            int P = 0;
-            for(int i=0; i<cursor.getColumnCount(); i++) {
-                P = cursor.getInt(i);
-                pattern[i] = P;
-                Log.i("db",""+pattern[i]);
-                maxP = (maxP<P?P:maxP);
-            }
-            maxP = maxP-3;
-            for(int i=0; i<cursor.getColumnCount();i++) {
-                pattern[i] = (maxP<=pattern[i]?1:0);
-
-            }
-        }
-
-        String clean_sql4 = "INSERT INTO food_pattern (a,b,c,d,e,f,g) VALUES " +
-                "("+pattern[0]+","+pattern[1]+","+pattern[2]+","+pattern[3]+","+pattern[4]+","+pattern[5]+","+pattern[6]+");";
-        try {
-            db.execSQL(clean_sql2);
-            db.execSQL(clean_sql3);
-            db.execSQL(clean_sql4);
-        }catch(Exception e) {
-            Log.i("db","food_pattern_clean Failed1");
-        }
-    }
     public void food_pattern_clean2() {
         // 패턴 일주일에 한번씩 정리해주는 메서드
 
@@ -306,11 +282,10 @@ public class DBHandler {
         }
     }
     public void abode_insert() {
-        String local = item.address;
-        String lc[] = local.split(" ");
-        if(!item.phone.equals("010-2043-5392")) {
+        if(!MainActivity.ThemaItem.get(9).phone.equals("010-2043-5392")) {
             try {
-                db.execSQL("INSERT INTO abode VALUES (null, '" + lc[2] + "', '" + lc[3] + "', 1);");
+                db.execSQL("INSERT INTO abode VALUES (null, '" + staticMerge.dong + "', '" + staticMerge.bunji + "', 1, 0);");
+                Log.i("db","abode_insert Successe");
             }catch (Exception e) {
                 Log.i("db","abode_insert Failed");
             }
@@ -345,24 +320,26 @@ public class DBHandler {
 
                 clean_sql2 = "UPDATE abode SET weight=" + weight + " WHERE local_name='" + loc1 + "' AND addr='" + loc2 + "';";
             }
-        }
-        clean_sql3 = "DELETE FROM abode " +
-                "WHERE count NOT IN " +
-                "(SELECT MAX(count) FROM abode GROUP BY addr, weight);";
-        clean_sql4 = "DELETE FROM abode " +
-                "WHERE EXISTS (SELECT _id FROM abode WHERE count=0 " +
-                "AND EXISTS (SELECT _id FROM abode WHERE count>0));";
-        clean_sql5 = "UPDATE abode SET count = (count+1), weight=0;";
-        String clean_sql6 = "DELETE FROM abode WHERE _id NOT IN " +
-                "(SELECT * FROM (SELECT MIN(_id) FROM abode GROUP BY local_name, addr) AS T);";
-        try {
-            db.execSQL(clean_sql2);
-            db.execSQL(clean_sql3);
-            db.execSQL(clean_sql4);
-            db.execSQL(clean_sql5);
-            db.execSQL(clean_sql6);
-        }catch (Exception e) {
-            Log.i("db","abode_clean Failed");
+
+            clean_sql3 = "DELETE FROM abode " +
+                    "WHERE count NOT IN " +
+                    "(SELECT MAX(count) FROM abode GROUP BY addr, weight);";
+            clean_sql4 = "DELETE FROM abode " +
+                    "WHERE EXISTS (SELECT _id FROM abode WHERE count=0 " +
+                    "AND EXISTS (SELECT _id FROM abode WHERE count>0));";
+            clean_sql5 = "UPDATE abode SET count = (count+1), weight=0;";
+            String clean_sql6 = "DELETE FROM abode WHERE _id NOT IN " +
+                    "(SELECT * FROM (SELECT MIN(_id) FROM abode GROUP BY local_name, addr) AS T);";
+            try {
+                db.execSQL(clean_sql2);
+                db.execSQL(clean_sql3);
+                db.execSQL(clean_sql4);
+                db.execSQL(clean_sql5);
+                db.execSQL(clean_sql6);
+                Log.i("db","abode_clean success");
+            } catch (Exception e) {
+                Log.i("db", "abode_clean Failed");
+            }
         }
     }
 

@@ -158,9 +158,9 @@ public class registerAlarm {
             e.printStackTrace();
         }
     }
+
     public void registerpattern(){
         try {
-            Log.i("ra pattern","ra pattern!!!!");
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.HOUR_OF_DAY, 23);
             cal.set(Calendar.MINUTE, 0);
@@ -182,7 +182,6 @@ public class registerAlarm {
 
     public void registerplace(){
         try {
-            Log.i("ra place","ra place!!!!");
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.SECOND, cal.get(Calendar.SECOND) + 10);
             long halfMinute = 30 * 60 * 1000;
@@ -200,7 +199,6 @@ public class registerAlarm {
     }
     public void registerOneWeek(){
         try {
-            Log.i("ra oneweek","ra OneWeek!!!");
             long atime = System.currentTimeMillis();
 
             Calendar cal = Calendar.getInstance();

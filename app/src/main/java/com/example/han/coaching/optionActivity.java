@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 
 /**
  * Created by han on 2015-11-24.
@@ -23,6 +24,7 @@ public class optionActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.option_layout);
+
 
         a = (CheckBox) findViewById(R.id.checkBox0);
         b = (CheckBox) findViewById(R.id.checkBox1);
@@ -181,10 +183,13 @@ public class optionActivity extends FragmentActivity {
     public void onClicked(View v) {
         if (noonWidget.contentValue.equals("content1")) {
             noonWidget.contentValue = "content2";
+            Toast.makeText(this, "위젯이 뉴스를 보여줍니다.", Toast.LENGTH_SHORT).show();
         } else {
             noonWidget.contentValue="content1";
+            Toast.makeText(this, "위젯이 추천 음식점을 보여줍니다.", Toast.LENGTH_SHORT).show();
         }
         MainActivity.mmmm();
+
     }
 
     public void onClicked2(View v) {

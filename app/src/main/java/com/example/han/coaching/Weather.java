@@ -112,6 +112,7 @@ public class Weather extends BroadcastReceiver {
                 while (s.hasNext())
                     str += s.nextLine();
                 is.close();
+                Log.i("json:",str);
                 return str;
             }
             catch(Exception t) {
@@ -129,14 +130,21 @@ public class Weather extends BroadcastReceiver {
         protected void onPostExecute(String s) {
             String temp[];
             String temp1;
-            String result="";
+            String dong="";
+            String bunji="";
             try{
                 JSONObject searchresult = new JSONObject(s);
+
                 JSONObject json = new JSONObject();
                 temp1 = searchresult.getString("region");
-
+                json = searchresult.getJSONObject("old");
+                bunji = json.getString("bunji");
+                if(!json.getString("ho").equals("")) {
+                    bunji += "-"+json.getString("ho");
+                }
                 temp = temp1.split(" ");
-                result = temp[2];
+                dong = temp[2];
+
 
             }catch (Exception e){
                 StringWriter sw = new StringWriter();
@@ -144,8 +152,9 @@ public class Weather extends BroadcastReceiver {
                 String exceptionAsStrting = sw.toString();
                 Log.e("aaaa", exceptionAsStrting);
             }
-            Log.i("aaaa",result);
-            staticMerge.dong = result;
+            Log.i("aaaa",dong+","+bunji);
+            staticMerge.dong = dong;
+            staticMerge.bunji = bunji;
             //동 이름 result
             super.onPostExecute(s);
         }

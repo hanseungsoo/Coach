@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Created by han on 2015-11-24.
@@ -20,16 +19,21 @@ public class DBActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_db);
-        dbHandler = DBHandler.open(MainActivity.mContext);
         tv = (TextView)findViewById(R.id.dbtv);
     }
+
     @Override
-    public void onStop() {
-        super.onStop();
+    protected void onStart() {
+        dbHandler = DBHandler.open(MainActivity.mContext);
+        super.onStart();
+    }
+    @Override
+    protected void onStop() {
         dbHandler.close();
+        super.onStop();
     }
 
-    public void Button1CLick(View v) {
+    public void foodPatternViewClicked(View v) {
         //음식패턴 보기
         Cursor cursor = dbHandler.select_food_pattern();
         String str = "";
@@ -45,16 +49,13 @@ public class DBActivity extends Activity {
         }
         tv.setText(str);
     }
-    public void Button21CLick(View v) {
-        //food_pattern_insert
-        dbHandler.food_pattern_clean1();
-
-    }
+/*
     public void Button22CLick(View v) {
         //음식패턴 정리
         dbHandler.food_pattern_clean2();
     }
-    public void Button3CLick(View v) {
+    */
+    public void abodeViewClicked(View v) {
         //거주지 보기
         Cursor cursor = dbHandler.select_abode();
         String str = "";
@@ -70,20 +71,21 @@ public class DBActivity extends Activity {
         }
         tv.setText(str);
     }
-    public void Button4CLick(View v) {
-        //거주지 정리
-        dbHandler.abode_clean();
-    }
 
-    public void Button5Click(View v) {
-        String nowDate,lunarDate;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-        Date date = new Date();
-        nowDate = sdf.format(date);
-        LunarCalendar lunar = new LunarCalendar();
-        lunarDate = lunar.toLunar(nowDate);
-        tv.setText("today: " + nowDate +"\nLunar: "+ lunarDate);
-
+    public void foodFavoriteViewClicked(View v) {
+        Cursor cursor = dbHandler.food_favorite_select();
+        String str = "";
+        String str1 = "선호음식:";
+        for(int j =0; j<cursor.getCount(); j++) {
+            for (int i = 0; i < cursor.getColumnCount(); i++) {
+                str += str1 + cursor.getString(i);
+                str1=", ";
+            }
+            str1="선호음식"+(j+2)+":";
+            cursor.moveToNext();
+            str += "\n";
+        }
+        tv.setText(str);
     }
 
     public void TimeChecked(View v) {

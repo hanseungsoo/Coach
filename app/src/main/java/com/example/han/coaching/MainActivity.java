@@ -203,6 +203,7 @@ public class MainActivity extends FragmentActivity {
                                 Log.i("widget", "widget->main, " + noonWidget.contentValue);
                                 int tab_position = noonWidget.themaValue;
                                 actionbar.setSelectedNavigationItem(tab_position);
+                                SP2.setSelection(noonWidget.swapValue,true);
                             }
                         }
                         /*if(staticMerge.timer){
@@ -264,7 +265,6 @@ public class MainActivity extends FragmentActivity {
                 cateTv = (TextView)findViewById(R.id.cateView);
                 addrTv = (TextView)findViewById(R.id.addrView);
                 foodImg = (ImageView)findViewById(R.id.cookImage);
-                SP2 = (Spinner)findViewById(R.id.spinner2);
                 SP2 = (Spinner)findViewById(R.id.spinner2);
                 final ArrayList<String> arraylist2 = new ArrayList<String>();
                 arraylist2.add("추천1");

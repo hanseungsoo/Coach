@@ -71,14 +71,6 @@ public class foodDbJson extends AsyncTask<String,Void,Void> {
                                     MainActivity.ThemaItem.set(2, item);
                                     break;
                                 default:
-
-
-
-
-
-
-
-
                                     MainActivity.ThemaItem.set(0, itemList.get(0));
                                     MainActivity.ThemaItem.set(1, itemList.get(1));
                                     MainActivity.ThemaItem.set(2, itemList.get(2));

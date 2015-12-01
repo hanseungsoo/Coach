@@ -42,9 +42,7 @@ public class NoonDatabase extends SQLiteOpenHelper {
         try {
             db.execSQL("INSERT INTO food_pattern VALUES (null, 1,1,1,1,1,1,1);");
             db.execSQL("INSERT INTO abode VALUES (null, '단월동','458-101', 1, 0);");
-            db.execSQL("INSERT INTO food_favorite (local_name, food, wea, time, weight) VALUES ('단월동','파전','rain','아침',1);");
-            db.execSQL("INSERT INTO food_favorite VALUES (null, '단월동','피자','broken clouds','아침',1,'2015-11-17');");
-
+            db.execSQL("INSERT INTO food_favorite (local_name, food, wea, time, weight) VALUES ('단월동','파전','rain','점저',1);");
             Log.i("widgeta","insert sql");
         } catch(Exception ex) {
             Log.i("widgeta", "Exception in INSERT_SQL");

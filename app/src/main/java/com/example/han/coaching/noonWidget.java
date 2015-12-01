@@ -29,12 +29,15 @@ public class noonWidget extends AppWidgetProvider {
     private static DisplayImageOptions displayOptions;
     public static String contentValue="content2";
     public static String ph="000-0000";
+    public static int swapValue=0;
     public static boolean CLICK_FLAG = false;
 
+    private static ArrayList<Item> items;
     private static Item item;
 
     static {
-        //displayOptions = DisplayImageOptions.createSimple();
+        displayOptions = DisplayImageOptions.createSimple();
+        /*
         displayOptions = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.noon)
                 .showImageForEmptyUri(R.drawable.noon)
@@ -43,6 +46,7 @@ public class noonWidget extends AppWidgetProvider {
                 .cacheOnDisk(true)
                 .considerExifParams(true)
                 .build();
+                */
     }
 
 
@@ -87,6 +91,7 @@ public class noonWidget extends AppWidgetProvider {
             onUpdate(context, appWidgetManager, ids);
         }
         if (intent.getAction().equals("chae.widget.left")) {
+            swapValue=0;
             int value = intent.getIntExtra("T_value", 0);
             switch (value) {
                 case 0:
@@ -114,6 +119,7 @@ public class noonWidget extends AppWidgetProvider {
         }
 
         if (intent.getAction().equals("chae.widget.right")) {
+            swapValue=0;
             int value = intent.getIntExtra("T_value", 0);
             switch (value) {
                 case 0:
@@ -162,7 +168,18 @@ public class noonWidget extends AppWidgetProvider {
         }
 
         if (intent.getAction().equals("chae.widget.swap")) {
+            if(swapValue==0) {
+                swapValue=1;
+            } else if(swapValue==1) {
+                swapValue =2;
+            } else {
+                swapValue =0;
+            }
 
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            ComponentName thiswidget = new ComponentName(context, noonWidget.class);
+            int[] ids = appWidgetManager.getAppWidgetIds(thiswidget);
+            onUpdate(context, appWidgetManager, ids);
         }
     }
 
@@ -205,7 +222,8 @@ public class noonWidget extends AppWidgetProvider {
             updateViews.setOnClickPendingIntent(R.id.call_button, pendingIntent_D);
             updateViews.setOnClickPendingIntent(R.id.left_button, pendingIntent_L);
             updateViews.setOnClickPendingIntent(R.id.right_button, pendingIntent_R);
-            updateViews.setOnClickPendingIntent(R.id.widget_click, pendingIntent_C);
+            updateViews.setOnClickPendingIntent(R.id.widget_image, pendingIntent_C);
+            updateViews.setOnClickPendingIntent(R.id.widget_textLay, pendingIntent_C);
             updateViews.setOnClickPendingIntent(R.id.widget_swap, pendingIntent_S);
 
             ImageSize minImazeSize = new ImageSize(120,400);
@@ -269,7 +287,13 @@ public class noonWidget extends AppWidgetProvider {
     private static void configureLayout(String content, Item item1) {
         updateViews.setTextViewText(R.id.widget_title, item1.title);
         updateViews.setTextViewText(R.id.widget_cg, item1.category);
-        updateViews.setTextViewText(R.id.widget_address, item1.address);
+        if(item1.address.substring(0,3).equals("(X)")) {
+            updateViews.setTextViewText(R.id.widget_title, "오늘은 기념일이 아니거나,");
+            updateViews.setTextViewText(R.id.widget_cg, "주변에 추천되는 음식집이");
+            updateViews.setTextViewText(R.id.widget_address,"없습니다." );
+        }else {
+            updateViews.setTextViewText(R.id.widget_address, item1.address);
+        }
         Log.i("widget", "configure:" + item1.title + item1.imageUrl);
 
     }
@@ -278,16 +302,40 @@ public class noonWidget extends AppWidgetProvider {
         Item item1 = new Item();
         switch (string) {
             case "thema1":
-                item1 = items.get(0);
+                if(swapValue==0){
+                    item1 = items.get(0);
+                }else if(swapValue==1) {
+                    item1 = items.get(1);
+                }else {
+                    item1 = items.get(2);
+                }
                 break;
             case "thema2":
-                item1 = items.get(1);
+                if(swapValue==0){
+                    item1 = items.get(3);
+                }else if(swapValue==1) {
+                    item1 = items.get(4);
+                }else {
+                    item1 = items.get(5);
+                }
                 break;
             case "thema3":
-                item1 = items.get(2);
+                if(swapValue==0){
+                    item1 = items.get(6);
+                }else if(swapValue==1) {
+                    item1 = items.get(7);
+                }else {
+                    item1 = items.get(8);
+                }
                 break;
             case "thema4":
-                item1 = items.get(3);
+                if(swapValue==0){
+                    item1 = items.get(9);
+                }else if(swapValue==1) {
+                    item1 = items.get(10);
+                }else {
+                    item1 = items.get(11);
+                }
                 break;
             default:
         }

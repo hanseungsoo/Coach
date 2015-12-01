@@ -9,15 +9,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/button1"
-            android:onClick="Button1CLick"
-            android:text="음식패턴 DB 보기"/>
+            android:onClick="foodPatternViewClicked"
+            android:text="음식패턴 보기"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/button1"
             android:id="@+id/button22"
-            android:onClick="Button22CLick"
-            android:text="정리"/>
+            android:onClick="foodFavoriteViewClicked"
+            android:text="선호음식 확인"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,37 +30,26 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="거주지 DB 보기"
-            android:onClick="Button3CLick"
+            android:text="거주지 확인"
+            android:onClick="abodeViewClicked"
             android:id="@+id/button3"
             android:layout_below="@+id/button1"
             android:layout_toLeftOf="@+id/button22"
             android:layout_toStartOf="@+id/button22" />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="Button5Click"
-            android:layout_below="@+id/button22"
-            android:layout_toRightOf="@+id/button3"
-            android:layout_toEndOf="@+id/button3" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="거주지 정리"
-            android:onClick="Button4CLick"
-            android:id="@+id/button4"
-            android:layout_below="@+id/button22"
-            android:layout_toRightOf="@+id/button22"
-            android:layout_toEndOf="@+id/button22" />
     </RelativeLayout>
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="420dp"
-        android:id="@+id/dbtv"
-        android:background="@android:color/darker_gray"
-        android:textColor="@android:color/holo_red_dark"
-        android:text="ABCDEFG"
-        android:textSize="19dp"/>
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:verticalScrollbarPosition="right">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="420dp"
+            android:id="@+id/dbtv"
+            android:background="@android:color/darker_gray"
+            android:textColor="@android:color/holo_red_dark"
+            android:text="ABCDEFG"
+            android:textSize="19dp"/>
+    </ScrollView>
 
 </LinearLayout>
